@@ -231,6 +231,29 @@
     color:var(--ink-dim);
   }
 
+  #nav-dots{
+    position:fixed;
+    top:50%;
+    right:4vw;
+    transform:translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    gap:0.9em;
+    z-index:20;
+  }
+  #nav-dots .dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:transparent;
+    border:1px solid rgba(35,43,54,0.35);
+    transition:all 250ms ease;
+  }
+  #nav-dots .dot.active{
+    background:var(--gold-soft);
+    border-color:var(--gold-soft);
+    transform:scale(1.3);
+  }
+
   .contact-form{
     position:relative;
     overflow:hidden;
@@ -405,6 +428,7 @@
 
   <!-- LANDSCAPE: the real, scrollable site -->
   <div id="site">
+    <div id="nav-dots"><!-- dots injected by JS --></div>
     <div id="scroll-frame">
       <div id="sections-wrap">
 
@@ -540,11 +564,23 @@
     const WHEEL_THRESHOLD = 12;
     const TOUCH_THRESHOLD = 32;
 
+    // Build the nav dots (one per section) so the current position is
+    // always visible, regardless of which way someone happens to swipe.
+    const navDotsEl = document.getElementById('nav-dots');
+    const dotEls = [];
+    for (let i = 0; i < panelCount; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      navDotsEl.appendChild(dot);
+      dotEls.push(dot);
+    }
+
     function goToSection(nextIndex){
       nextIndex = Math.max(0, Math.min(panelCount - 1, nextIndex));
       if (nextIndex === sectionIndex) return;
       sectionIndex = nextIndex;
       sectionsWrap.style.transform = `translateY(-${sectionIndex * 100}%)`;
+      dotEls.forEach((dot, i) => dot.classList.toggle('active', i === sectionIndex));
     }
 
     function handleGesture(signedDelta, threshold){
