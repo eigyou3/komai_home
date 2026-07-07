@@ -72,53 +72,27 @@
   /* ===================== PORTRAIT: LOCKED SCREEN ===================== */
   /* No transitions here on purpose — snaps instantly, never animates
      itself, so an OS auto-rotate flip never looks like "extra" spin. */
-  #lock-screen{
-    position:fixed; inset:0;
-    display:none;
-    align-items:center; justify-content:center;
-    touch-action:none;
-    z-index:10;
-  }
-  #lock-screen .lock-group{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    transform: rotate(90deg);
-  }
-  #lock-screen .word{
-    font-family:'Shippori Mincho', serif;
-    font-weight:500;
-    font-size:7vw;
-    letter-spacing:0.3em;
-    color:var(--gold-soft);
-    white-space:nowrap;
-  }
-  #lock-screen .hint{
-    margin-top:7vh;
-    display:flex;
-    align-items:center;
-    gap:0.5em;
-    font-size:0.62rem;
-    letter-spacing:0.22em;
-    color:var(--ink-dim);
-    white-space:nowrap;
-  }
-  #lock-screen .hint svg{
-    width:15px; height:15px;
-    flex-shrink:0;
-    color:var(--navy);
-    animation: tilt 1.8s ease-in-out infinite;
-  }
-  @keyframes tilt{
-    0%,100%{ transform:rotate(0deg); }
-    50%{ transform:rotate(90deg); }
-  }
-
-  /* ===================== LANDSCAPE: REAL SITE ===================== */
+  /* ===================== THE REAL SITE (always on) =====================
+     No lock screen, no orientation detection, no gyroscope. On touch
+     devices the content is simply pre-rotated 90° so it displays
+     correctly while the phone is held portrait. Mouse/desktop gets the
+     normal upright layout. This is completely unaffected by the OS
+     rotation-lock setting because nothing here checks orientation. */
   #site{
     position:fixed; inset:0;
-    display:none;
     z-index:10;
+  }
+  #rotator{
+    position:fixed;
+    top:50%; left:50%;
+    width:100vw; height:100vh;
+    transform:translate(-50%,-50%);
+  }
+  @media (pointer:coarse){
+    #rotator{
+      width:100vh; height:100vw;
+      transform:translate(-50%,-50%) rotate(90deg);
+    }
   }
   #scroll-frame{
     width:100%; height:100%;
@@ -385,24 +359,6 @@
     box-shadow: inset 0 2px 6px rgba(35,43,54,0.18);
   }
 
-  /* ===================== ORIENTATION SWITCH (instant, no transition) =====================
-     The rotate/lock concept only makes sense on touch devices that can
-     physically be turned. On a PC with a mouse, "rotate your screen" is
-     meaningless, so pointer:fine always shows the real site regardless
-     of window shape. Rule order matters here: the pointer:fine rule is
-     last so it wins over the portrait-lock rule when both could match. */
-  @media (orientation: portrait) and (pointer: coarse){
-    #lock-screen{ display:flex; }
-    #site{ display:none; }
-  }
-  @media (orientation: landscape){
-    #lock-screen{ display:none; }
-    #site{ display:block; }
-  }
-  @media (pointer: fine){
-    #lock-screen{ display:none; }
-    #site{ display:block; }
-  }
 </style>
 </head>
 <body>
@@ -412,25 +368,13 @@
     <div id="intro-word"><!-- letters injected by JS --></div>
   </div>
 
-  <!-- PORTRAIT: locked, nothing scrolls, just waits for rotation -->
-  <div id="lock-screen">
-    <div class="lock-group">
-      <div class="word">KOMAI HOME</div>
-      <div class="hint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-          <rect x="5" y="2" width="14" height="20" rx="2"/>
-          <line x1="12" y1="18" x2="12" y2="18.01"/>
-        </svg>
-        <span>スマホを横にしてください</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- LANDSCAPE: the real, scrollable site -->
+  <!-- The real, scrollable site. Touch devices get it rotated 90° so it
+       displays correctly while the phone is held portrait -- no orientation
+       detection, no gyroscope, no dependency on the OS rotation-lock setting. -->
   <div id="site">
-    <div id="nav-dots"><!-- dots injected by JS --></div>
-    <div id="scroll-frame">
-      <div id="sections-wrap">
+    <div id="rotator">
+      <div id="scroll-frame">
+        <div id="sections-wrap">
 
       <section class="panel">
         <span class="num">01</span>
@@ -508,8 +452,10 @@
         </div>
       </section>
 
+        </div>
       </div>
     </div>
+    <div id="nav-dots"><!-- dots injected by JS --></div>
   </div>
 
   <script>
@@ -538,10 +484,10 @@
     const totalFallTime = (letterCount - 1) * STAGGER_MS + FALL_MS;
 
     window.addEventListener('load', () => {
-      const isPortraitOnLoad = window.matchMedia('(orientation: portrait)').matches;
+      const isTouch = window.matchMedia('(pointer: coarse)').matches;
 
-      if (!isPortraitOnLoad) {
-        // Already landscape on load: skip the intro entirely.
+      if (!isTouch) {
+        // Mouse/desktop: skip the fall/spin intro, show the upright site directly.
         introOverlay.style.display = 'none';
         return;
       }
