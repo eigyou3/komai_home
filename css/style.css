@@ -1,0 +1,327 @@
+@charset "UTF-8";
+
+/* =========================================
+   ベースリセット ＆ 全体設定
+========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: #111;
+    color: #eaeaea;
+    font-family: 'Noto Serif JP', serif;
+    line-height: 1.8;
+}
+
+/* 背景アニメーション (トップページ用) */
+.bg-image {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('../images/common/hero-bg.png');
+    background-size: cover;
+    background-position: center;
+    animation: slowZoom 20s linear infinite alternate;
+    z-index: 1;
+}
+
+@keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+.wrapper {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* =========================================
+   グラスモーフィズムパネル (トップページ用)
+========================================= */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 50px 60px;
+    margin: auto 10%;
+    width: 90%;
+    max-width: 480px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+h1.site-title {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.concept-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #eaeaea;
+    margin-bottom: 40px;
+}
+
+/* =========================================
+   ナビゲーション (トップページ用)
+========================================= */
+.nav-list { list-style: none; }
+
+.nav-item {
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeInUp 0.8s forwards;
+}
+
+/* 順番にフワッと出すアニメーション遅延 */
+.nav-item:nth-child(1) { animation-delay: 0.3s; }
+.nav-item:nth-child(2) { animation-delay: 0.4s; }
+.nav-item:nth-child(3) { animation-delay: 0.5s; }
+.nav-item:nth-child(4) { animation-delay: 0.6s; }
+.nav-item:nth-child(5) { animation-delay: 0.7s; }
+.nav-item:nth-child(6) { animation-delay: 0.8s; }
+
+.nav-link {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-bottom: 6px;
+    width: fit-content;
+}
+
+.nav-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    opacity: 0.8;
+    font-weight: 300;
+}
+
+.nav-text {
+    letter-spacing: 2px;
+    margin-right: 20px;
+}
+
+.nav-arrow {
+    font-size: 18px;
+    opacity: 0.5;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav-link:hover::after { width: 100%; }
+.nav-link:hover .nav-arrow {
+    opacity: 1;
+    transform: translate(4px, -4px);
+}
+
+/* =========================================
+   フッター
+========================================= */
+footer {
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    color: #ccc;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+.social-icons a {
+    color: #ccc;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+.social-icons a:hover { color: #fff; }
+
+/* =========================================
+   キーフレーム (アニメーション定義)
+========================================= */
+@keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   下層ページ共通設定
+========================================= */
+/* ヘッダー */
+.sub-header {
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: rgba(17,17,17,0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0; left: 0; width: 100%; z-index: 100;
+}
+.sub-header .logo {
+    font-family: 'Jost', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: #fff;
+    text-decoration: none;
+}
+.back-btn {
+    display: flex;
+    align-items: center;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+.back-btn:hover { color: #fff; }
+.back-btn span { margin-right: 8px; font-size: 18px; }
+
+/* メインコンテンツ枠 */
+.sub-main {
+    padding: 120px 5% 80px; /* 固定ヘッダーの分だけ上に余白を取る */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.page-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-align: center;
+    margin-bottom: 60px;
+    color: #fff;
+}
+
+/* =========================================
+   施工事例グリッド ＆ ホバーギミック
+========================================= */
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+.work-card {
+    display: block;
+    text-decoration: none;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background: rgba(255,255,255,0.05);
+}
+
+/* ⬇︎ 画像2枚重ねのギミック */
+.work-thumb-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+.work-thumb {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* サブ画像は最初は透明にしておく */
+.sub-img {
+    opacity: 0; 
+    transform: scale(1.1); /* 少し拡大した状態から戻る演出用 */
+}
+
+/* ホバー時の動作 */
+.work-card:hover .main-img {
+    opacity: 0; /* メイン画像がフワッと消える */
+}
+.work-card:hover .sub-img {
+    opacity: 1; /* サブ画像がフワッと現れる */
+    transform: scale(1); /* 拡大状態から通常サイズへ */
+}
+
+.work-info {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 30px 20px 20px;
+    color: #fff;
+    /* ホバー時に文字の背景（グラデーション）を少し濃くする */
+    transition: background 0.4s ease;
+}
+.work-card:hover .work-info {
+    background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.3));
+}
+
+.work-title {
+    font-size: 16px;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+.work-tag {
+    font-size: 11px;
+    color: #aaa;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   スマホ用レスポンシブ（横スクロール対応）
+========================================= */
+@media (max-width: 768px) {
+    .works-grid {
+        display: flex; /* Gridをやめて横並びのFlexに */
+        overflow-x: auto; /* 横スクロールを許可 */
+        /* ⬇︎ スクロール時にピタッと止まる（スナップ）魔法のコード */
+        scroll-snap-type: x mandatory;
+        gap: 15px;
+        padding-bottom: 20px;
+        /* スクロールバーを非表示にする（デザインを綺麗に保つ） */
+        scrollbar-width: none; /* Firefox用 */
+    }
+    .works-grid::-webkit-scrollbar {
+        display: none; /* Chrome, Safari用 */
+    }
+    
+    .work-card {
+        /* 画面幅の85%のサイズにする（右側に次の事例が少し見えてスクロールを促す効果） */
+        flex: 0 0 85%;
+        scroll-snap-align: center; /* 画面中央でピタッと止まる */
+    }
+}
