@@ -92,7 +92,6 @@ h1.site-title {
     animation: fadeInUp 0.8s forwards;
 }
 
-/* 順番にフワッと出すアニメーション遅延 */
 .nav-item:nth-child(1) { animation-delay: 0.3s; }
 .nav-item:nth-child(2) { animation-delay: 0.4s; }
 .nav-item:nth-child(3) { animation-delay: 0.5s; }
@@ -152,19 +151,26 @@ h1.site-title {
 footer {
     background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
     color: #ccc;
-    padding: 20px;
+    padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0px));
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     font-family: 'Jost', sans-serif;
     font-size: 11px;
     letter-spacing: 1px;
 }
+.social-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
 .social-icons a {
     color: #ccc;
     text-decoration: none;
-    margin-right: 20px;
-    font-size: 14px;
+    font-size: 12px;
+    white-space: nowrap;
     transition: color 0.3s;
 }
 .social-icons a:hover { color: #fff; }
@@ -183,7 +189,6 @@ footer {
 /* =========================================
    下層ページ共通設定
 ========================================= */
-/* ヘッダー */
 .sub-header {
     padding: 20px 40px;
     display: flex;
@@ -214,11 +219,15 @@ footer {
 .back-btn:hover { color: #fff; }
 .back-btn span { margin-right: 8px; font-size: 18px; }
 
-/* メインコンテンツ枠 */
 .sub-main {
-    padding: 120px 5% 80px; /* 固定ヘッダーの分だけ上に余白を取る */
+    padding: 100px 5% 40px;
     max-width: 1200px;
     margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
 }
 .page-title {
     font-family: 'Jost', sans-serif;
@@ -232,13 +241,23 @@ footer {
 
 /* =========================================
    施工事例グリッド ＆ ホバーギミック
+   （縦スクロールなし方針のため常時横スクロール化）
 ========================================= */
 .works-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     gap: 30px;
+    padding-bottom: 20px;
+    scrollbar-width: none;
 }
+.works-grid::-webkit-scrollbar {
+    display: none;
+}
+
 .work-card {
+    flex: 0 0 340px;
+    scroll-snap-align: start;
     display: block;
     text-decoration: none;
     border-radius: 8px;
@@ -247,7 +266,6 @@ footer {
     background: rgba(255,255,255,0.05);
 }
 
-/* ⬇︎ 画像2枚重ねのギミック */
 .work-thumb-wrapper {
     position: relative;
     width: 100%;
@@ -262,19 +280,17 @@ footer {
     transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* サブ画像は最初は透明にしておく */
 .sub-img {
-    opacity: 0; 
-    transform: scale(1.1); /* 少し拡大した状態から戻る演出用 */
+    opacity: 0;
+    transform: scale(1.1);
 }
 
-/* ホバー時の動作 */
 .work-card:hover .main-img {
-    opacity: 0; /* メイン画像がフワッと消える */
+    opacity: 0;
 }
 .work-card:hover .sub-img {
-    opacity: 1; /* サブ画像がフワッと現れる */
-    transform: scale(1); /* 拡大状態から通常サイズへ */
+    opacity: 1;
+    transform: scale(1);
 }
 
 .work-info {
@@ -283,7 +299,6 @@ footer {
     background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
     padding: 30px 20px 20px;
     color: #fff;
-    /* ホバー時に文字の背景（グラデーション）を少し濃くする */
     transition: background 0.4s ease;
 }
 .work-card:hover .work-info {
@@ -302,26 +317,45 @@ footer {
 }
 
 /* =========================================
-   スマホ用レスポンシブ（横スクロール対応）
+   スマホ用調整
 ========================================= */
 @media (max-width: 768px) {
-    .works-grid {
-        display: flex; /* Gridをやめて横並びのFlexに */
-        overflow-x: auto; /* 横スクロールを許可 */
-        /* ⬇︎ スクロール時にピタッと止まる（スナップ）魔法のコード */
-        scroll-snap-type: x mandatory;
-        gap: 15px;
-        padding-bottom: 20px;
-        /* スクロールバーを非表示にする（デザインを綺麗に保つ） */
-        scrollbar-width: none; /* Firefox用 */
-    }
-    .works-grid::-webkit-scrollbar {
-        display: none; /* Chrome, Safari用 */
-    }
-    
     .work-card {
-        /* 画面幅の85%のサイズにする（右側に次の事例が少し見えてスクロールを促す効果） */
         flex: 0 0 85%;
-        scroll-snap-align: center; /* 画面中央でピタッと止まる */
+    }
+}
+
+/* トップページのパネルをスマホで縮小（画面の50〜60%目安） */
+@media (max-width: 600px) {
+    .glass-panel {
+        padding: 24px 28px;
+        margin: auto 6%;
+        max-width: 360px;
+    }
+    h1.site-title {
+        font-size: 20px;
+        letter-spacing: 3px;
+        margin-bottom: 6px;
+    }
+    .concept-text {
+        font-size: 11px;
+        margin-bottom: 22px;
+    }
+    .nav-item {
+        margin-bottom: 12px;
+    }
+    .nav-link {
+        font-size: 13px;
+    }
+    .nav-icon {
+        font-size: 16px;
+        margin-right: 8px;
+    }
+    .nav-arrow {
+        font-size: 15px;
+    }
+    footer {
+        padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+        font-size: 10px;
     }
 }
