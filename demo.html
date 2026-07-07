@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>KOMAI HOME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #f3f3f1;
+    --ink: #232b36;
+    --ink-dim: #514d45;
+    --gold: #8f6f42;
+    --gold-soft: #8f6f42;
+    --navy: #2f4858;
+    --line: rgba(35,43,54,0.16);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{
+    width:100%; height:100%;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    overflow:hidden;
+    overscroll-behavior:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  /* ===================== INTRO (plays once) ===================== */
+  #intro{
+    position:fixed; inset:0;
+    background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    z-index:200;
+  }
+  #intro-word{
+    display:flex;
+    font-family:'Shippori Mincho', serif;
+    font-weight:500;
+    font-size:7.5vw;
+    letter-spacing:0.3em;
+    color:var(--gold-soft);
+    white-space:nowrap;
+    will-change: transform;
+  }
+  #intro-word.spin{
+    transition: transform 650ms cubic-bezier(.6,-0.03,.25,1.1);
+    transform: rotate(90deg);
+  }
+  #intro-word .letter{
+    display:inline-block;
+    opacity:0;
+    transform: translateY(-160vh);
+    animation: fallIn 620ms cubic-bezier(.22,.75,.24,1) forwards;
+  }
+  #intro-word .space{
+    display:inline-block;
+    width:0.5em;
+  }
+  @keyframes fallIn{
+    0%{ transform: translateY(-160vh); opacity:0; }
+    55%{ opacity:1; }
+    100%{ transform: translateY(0); opacity:1; }
+  }
+  #intro.fade{
+    transition: opacity 400ms ease;
+    opacity:0;
+    pointer-events:none;
+  }
+
+  /* ===================== PORTRAIT: LOCKED SCREEN ===================== */
+  /* No transitions here on purpose — snaps instantly, never animates
+     itself, so an OS auto-rotate flip never looks like "extra" spin. */
+  #lock-screen{
+    position:fixed; inset:0;
+    display:none;
+    align-items:center; justify-content:center;
+    touch-action:none;
+    z-index:10;
+  }
+  #lock-screen .lock-group{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    transform: rotate(90deg);
+  }
+  #lock-screen .word{
+    font-family:'Shippori Mincho', serif;
+    font-weight:500;
+    font-size:7vw;
+    letter-spacing:0.3em;
+    color:var(--gold-soft);
+    white-space:nowrap;
+  }
+  #lock-screen .hint{
+    margin-top:7vh;
+    display:flex;
+    align-items:center;
+    gap:0.5em;
+    font-size:0.62rem;
+    letter-spacing:0.22em;
+    color:var(--ink-dim);
+    white-space:nowrap;
+  }
+  #lock-screen .hint svg{
+    width:15px; height:15px;
+    flex-shrink:0;
+    color:var(--navy);
+    animation: tilt 1.8s ease-in-out infinite;
+  }
+  @keyframes tilt{
+    0%,100%{ transform:rotate(0deg); }
+    50%{ transform:rotate(90deg); }
+  }
+
+  /* ===================== LANDSCAPE: REAL SITE ===================== */
+  #site{
+    position:fixed; inset:0;
+    display:none;
+    z-index:10;
+  }
+  #scroll-frame{
+    width:100%; height:100%;
+    overflow:hidden;
+    touch-action:none;
+  }
+  #sections-wrap{
+    width:100%; height:100%;
+    display:flex;
+    flex-direction:column;
+    transition: transform 620ms cubic-bezier(.65,0,.35,1);
+    will-change: transform;
+  }
+
+  section.panel{
+    width:100%; height:100%;
+    min-height:100%;
+    flex-shrink:0;
+    display:flex; flex-direction:column;
+    justify-content:center;
+    padding: 6vh 8vw;
+    position:relative;
+    border-bottom:1px solid rgba(47,72,88,0.14);
+  }
+  .eyebrow{
+    font-size:0.7rem;
+    letter-spacing:0.22em;
+    color:var(--navy);
+    margin-bottom:1rem;
+    font-weight:500;
+  }
+  h1.logo{
+    font-family:'Shippori Mincho', serif;
+    font-weight:500;
+    font-size:clamp(1.6rem, 4.5vw, 2.4rem);
+    letter-spacing:0.28em;
+    color:var(--gold-soft);
+    line-height:1.05;
+  }
+  h2{
+    font-family:'Shippori Mincho', serif;
+    font-weight:700;
+    font-size:clamp(1.3rem, 4vw, 1.9rem);
+    line-height:1.5;
+    margin-bottom:1.2rem;
+    letter-spacing:0.04em;
+  }
+  p.lead{
+    font-size:0.9rem;
+    line-height:1.9;
+    color:var(--ink-dim);
+    max-width:44ch;
+  }
+  .tagline{
+    margin-top:0.5rem;
+    font-size:0.76rem;
+    letter-spacing:0.16em;
+    color:var(--ink-dim);
+  }
+  .num{
+    position:absolute;
+    top:6vh; right:8vw;
+    font-family:'Shippori Mincho', serif;
+    font-size:0.72rem;
+    color:var(--navy);
+    letter-spacing:0.1em;
+    opacity:0.75;
+  }
+
+  .works-grid{
+    display:flex;
+    gap:4vw;
+    margin-top:2.4vh;
+    max-width:100%;
+  }
+  .work-card{
+    flex:1;
+    min-width:0;
+  }
+  .work-photo{
+    width:100%;
+    height:16vh;
+    border-radius:2px;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:0.9rem;
+  }
+  .work-photo::after{
+    content:attr(data-label);
+    position:absolute;
+    bottom:0.5em; left:0.7em;
+    font-size:0.6rem;
+    letter-spacing:0.16em;
+    color:rgba(35,43,54,0.55);
+  }
+  .work-photo.p1{ background: linear-gradient(145deg, #d9cbae, #b89a6e); }
+  .work-photo.p2{ background: linear-gradient(145deg, #cdd3c4, #a3b18f); }
+  .work-photo.p3{ background: linear-gradient(145deg, #d9c6ca, #b98d95); }
+  .work-name{
+    font-family:'Shippori Mincho', serif;
+    font-weight:500;
+    font-size:1rem;
+    letter-spacing:0.12em;
+    color:var(--gold-soft);
+    margin-bottom:0.5rem;
+  }
+  .work-desc{
+    font-size:0.74rem;
+    line-height:1.7;
+    color:var(--ink-dim);
+  }
+
+  .contact-form{
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+    max-width:420px;
+    margin-top:2vh;
+    padding:1.3rem 1.4rem;
+    background:rgba(255,255,255,0.28);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.6);
+    border-radius:10px;
+    box-shadow:0 8px 32px rgba(35,43,54,0.07);
+  }
+  .contact-form::before{
+    content:"";
+    position:absolute;
+    z-index:-1;
+    top:0; left:0; right:0;
+    height:45%;
+    background:linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0));
+    pointer-events:none;
+  }
+  .field-group{ display:flex; flex-direction:column; }
+  .message-box{
+    width:100%;
+    min-height:17vh;
+    background:rgba(255,255,255,0.22);
+    border:1px solid rgba(35,43,54,0.14);
+    border-radius:6px;
+    padding:0.7em 0.8em;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-size:0.82rem;
+    line-height:1.6;
+    color:var(--ink);
+    resize:none;
+    box-shadow: inset 0 2px 6px rgba(35,43,54,0.09), inset 0 -1px 0 rgba(255,255,255,0.5);
+  }
+  .message-box::placeholder{ color:var(--ink-dim); opacity:0.7; }
+  .message-box:focus{
+    outline:none;
+    border-color:var(--gold-soft);
+    background:rgba(255,255,255,0.4);
+  }
+  @media (pointer:fine){
+    .message-box{ resize:vertical; }
+  }
+  .char-count{
+    align-self:flex-end;
+    margin-top:0.35rem;
+    font-size:0.66rem;
+    letter-spacing:0.05em;
+    color:var(--ink-dim);
+  }
+  .contact-method{
+    display:flex;
+    gap:0.6rem;
+  }
+  .method-option{ position:relative; cursor:pointer; }
+  .method-option input{
+    position:absolute;
+    opacity:0;
+    width:0; height:0;
+  }
+  .method-option span{
+    display:inline-block;
+    padding:0.4em 1.15em;
+    font-size:0.7rem;
+    letter-spacing:0.14em;
+    border:1px solid rgba(35,43,54,0.2);
+    border-radius:999px;
+    color:var(--ink-dim);
+    background:rgba(255,255,255,0.2);
+    transition:all 200ms ease;
+  }
+  .method-option input:checked + span{
+    border-color:var(--gold-soft);
+    color:var(--gold-soft);
+    background:rgba(255,255,255,0.55);
+  }
+  .contact-input{
+    width:100%;
+    background:rgba(255,255,255,0.22);
+    border:1px solid rgba(35,43,54,0.14);
+    border-radius:6px;
+    padding:0.7em 0.8em;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-size:0.82rem;
+    color:var(--ink);
+    box-shadow: inset 0 2px 6px rgba(35,43,54,0.09), inset 0 -1px 0 rgba(255,255,255,0.5);
+  }
+  .contact-input::placeholder{ color:var(--ink-dim); opacity:0.7; }
+  .contact-input:focus{
+    outline:none;
+    border-color:var(--gold-soft);
+    background:rgba(255,255,255,0.4);
+  }
+  .submit-btn{
+    align-self:flex-start;
+    margin-top:0.2rem;
+    padding:0.75em 2.4em;
+    background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.14));
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:var(--navy);
+    border:1px solid rgba(255,255,255,0.75);
+    border-radius:999px;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-size:0.78rem;
+    letter-spacing:0.18em;
+    cursor:pointer;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.9),
+      inset 0 -6px 10px rgba(35,43,54,0.06),
+      0 6px 16px rgba(35,43,54,0.12);
+    transition:all 200ms ease;
+  }
+  .submit-btn:hover{
+    background:linear-gradient(180deg, rgba(255,255,255,0.68), rgba(255,255,255,0.22));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,1),
+      inset 0 -6px 10px rgba(35,43,54,0.06),
+      0 8px 20px rgba(35,43,54,0.16);
+  }
+  .submit-btn:active{
+    transform:translateY(1px);
+    box-shadow: inset 0 2px 6px rgba(35,43,54,0.18);
+  }
+
+  /* ===================== ORIENTATION SWITCH (instant, no transition) =====================
+     The rotate/lock concept only makes sense on touch devices that can
+     physically be turned. On a PC with a mouse, "rotate your screen" is
+     meaningless, so pointer:fine always shows the real site regardless
+     of window shape. Rule order matters here: the pointer:fine rule is
+     last so it wins over the portrait-lock rule when both could match. */
+  @media (orientation: portrait) and (pointer: coarse){
+    #lock-screen{ display:flex; }
+    #site{ display:none; }
+  }
+  @media (orientation: landscape){
+    #lock-screen{ display:none; }
+    #site{ display:block; }
+  }
+  @media (pointer: fine){
+    #lock-screen{ display:none; }
+    #site{ display:block; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- INTRO ANIMATION (plays once on load) -->
+  <div id="intro">
+    <div id="intro-word"><!-- letters injected by JS --></div>
+  </div>
+
+  <!-- PORTRAIT: locked, nothing scrolls, just waits for rotation -->
+  <div id="lock-screen">
+    <div class="lock-group">
+      <div class="word">KOMAI HOME</div>
+      <div class="hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <line x1="12" y1="18" x2="12" y2="18.01"/>
+        </svg>
+        <span>スマホを横にしてください</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LANDSCAPE: the real, scrollable site -->
+  <div id="site">
+    <div id="scroll-frame">
+      <div id="sections-wrap">
+
+      <section class="panel">
+        <span class="num">01</span>
+        <h1 class="logo">KOMAI HOME</h1>
+        <div class="tagline">旭川の"暮らしを支える"工務店</div>
+      </section>
+
+      <section class="panel">
+        <span class="num">02</span>
+        <div class="eyebrow">CONCEPT</div>
+        <h2>寒さの厳しいこの土地での暮らしを考える</h2>
+        <p class="lead">
+          旭川の冬に何十年も耐える家とは<br>
+          断熱・気密・造作、すべてに理由がある家づくりを、一棟ずつ丁寧に。
+        </p>
+      </section>
+
+      <section class="panel">
+        <span class="num">03</span>
+        <div class="eyebrow">WORKS</div>
+        <h2>施工事例</h2>
+        <div class="works-grid">
+          <div class="work-card">
+            <div class="work-photo p1" data-label="PHOTO"></div>
+            <div class="work-name">Kube</div>
+            <div class="work-desc">"K"ubicな佇×住まい。美容室と居宅が共存するお家。</div>
+          </div>
+          <div class="work-card">
+            <div class="work-photo p2" data-label="PHOTO"></div>
+            <div class="work-name">koti+</div>
+            <div class="work-desc">心地よい暮らし（koti）に、デザインをプラス(+)する。</div>
+          </div>
+          <div class="work-card">
+            <div class="work-photo p3" data-label="PHOTO"></div>
+            <div class="work-name">YORISOU</div>
+            <div class="work-desc">家族の暮らしに寄り添う、ちょうどいいお家。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <span class="num">04</span>
+        <div class="eyebrow">PROCESS</div>
+        <h2>家づくりの流れ</h2>
+        <p class="lead">
+          初めてのご相談から、お土地探し、プラン作成・御見積、お引き渡しまで。<br>不安なく進めていただけるよう、一つひとつの工程を見える化してお届けします。
+        </p>
+      </section>
+
+      <section class="panel">
+        <span class="num">05</span>
+        <div class="eyebrow">CONTACT</div>
+        <h2>まずは、お話だけでも。</h2>
+        <p class="lead">モデル見学、ご相談、随時受け付けています。</p>
+
+        <div class="contact-form">
+          <div class="field-group">
+            <textarea id="contact-message" class="message-box" maxlength="500" placeholder="ご相談内容やご質問など、お気軽にご記入ください"></textarea>
+            <div class="char-count"><span id="char-count-num">0</span> / 500</div>
+          </div>
+          <div class="contact-method">
+            <label class="method-option">
+              <input type="radio" name="contact-method" id="method-mail" checked>
+              <span>メール</span>
+            </label>
+            <label class="method-option">
+              <input type="radio" name="contact-method" id="method-line">
+              <span>LINE</span>
+            </label>
+          </div>
+          <div class="field-group">
+            <input type="email" id="contact-address" class="contact-input" placeholder="メールアドレス">
+          </div>
+          <button type="button" class="submit-btn" id="contact-submit">送信する</button>
+        </div>
+      </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STAGGER_MS = 140;
+    const FALL_MS = 950;
+    const text = "KOMAI HOME";
+    const introWordEl = document.getElementById('intro-word');
+    const introOverlay = document.getElementById('intro');
+
+    // Build one span per character, staggering the fall animation.
+    let letterCount = 0;
+    [...text].forEach((ch) => {
+      const span = document.createElement('span');
+      if (ch === ' ') {
+        span.className = 'space';
+        span.innerHTML = '&nbsp;';
+      } else {
+        span.className = 'letter';
+        span.textContent = ch;
+        span.style.animationDelay = (letterCount * STAGGER_MS) + 'ms';
+        letterCount++;
+      }
+      introWordEl.appendChild(span);
+    });
+
+    const totalFallTime = (letterCount - 1) * STAGGER_MS + FALL_MS;
+
+    window.addEventListener('load', () => {
+      const isPortraitOnLoad = window.matchMedia('(orientation: portrait)').matches;
+
+      if (!isPortraitOnLoad) {
+        // Already landscape on load: skip the intro entirely.
+        introOverlay.style.display = 'none';
+        return;
+      }
+
+      // Letters fall one by one (handled by CSS animation-delay above).
+      // Once the last letter has landed, rotate the whole word together.
+      setTimeout(() => introWordEl.classList.add('spin'), totalFallTime + 320);
+      setTimeout(() => introOverlay.classList.add('fade'), totalFallTime + 320 + 650);
+      setTimeout(() => introOverlay.style.display = 'none', totalFallTime + 320 + 650 + 400);
+    });
+
+    // ============ Direction-normalized, one-section-per-gesture scroll ============
+    // Any scroll/swipe input — up, down, left, right — advances to the next
+    // section. Doing the gesture in the opposite direction goes back.
+    const sectionsWrap = document.getElementById('sections-wrap');
+    const panelCount = document.querySelectorAll('#sections-wrap .panel').length;
+    let sectionIndex = 0;
+    let gestureLocked = false;
+    const GESTURE_LOCK_MS = 700; // matches the CSS transition above
+    const WHEEL_THRESHOLD = 12;
+    const TOUCH_THRESHOLD = 32;
+
+    function goToSection(nextIndex){
+      nextIndex = Math.max(0, Math.min(panelCount - 1, nextIndex));
+      if (nextIndex === sectionIndex) return;
+      sectionIndex = nextIndex;
+      sectionsWrap.style.transform = `translateY(-${sectionIndex * 100}%)`;
+    }
+
+    function handleGesture(signedDelta, threshold){
+      if (gestureLocked) return;
+      if (Math.abs(signedDelta) < threshold) return;
+      gestureLocked = true;
+      goToSection(sectionIndex + (signedDelta > 0 ? 1 : -1));
+      setTimeout(() => { gestureLocked = false; }, GESTURE_LOCK_MS);
+    }
+
+    const scrollFrameEl = document.getElementById('scroll-frame');
+
+    scrollFrameEl.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const dominant = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      handleGesture(dominant, WHEEL_THRESHOLD);
+    }, { passive: false });
+
+    let touchStartX = 0, touchStartY = 0;
+    scrollFrameEl.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    scrollFrameEl.addEventListener('touchend', (e) => {
+      const dx = touchStartX - e.changedTouches[0].clientX; // swipe left -> positive
+      const dy = touchStartY - e.changedTouches[0].clientY; // swipe up   -> positive
+      const dominant = Math.abs(dy) > Math.abs(dx) ? dy : dx;
+      handleGesture(dominant, TOUCH_THRESHOLD);
+    }, { passive: true });
+
+    // ============ Contact form: mail / LINE toggle ============
+    const methodMail = document.getElementById('method-mail');
+    const methodLine = document.getElementById('method-line');
+    const contactAddressEl = document.getElementById('contact-address');
+    function updateContactMethod(){
+      if (methodLine.checked) {
+        contactAddressEl.type = 'text';
+        contactAddressEl.placeholder = 'LINE ID';
+        contactAddressEl.value = '';
+      } else {
+        contactAddressEl.type = 'email';
+        contactAddressEl.placeholder = 'メールアドレス';
+        contactAddressEl.value = '';
+      }
+    }
+    if (methodMail && methodLine) {
+      methodMail.addEventListener('change', updateContactMethod);
+      methodLine.addEventListener('change', updateContactMethod);
+    }
+
+    // ============ Contact form: live char count ============
+    const contactMessage = document.getElementById('contact-message');
+    const charCountNum = document.getElementById('char-count-num');
+    if (contactMessage && charCountNum) {
+      contactMessage.addEventListener('input', () => {
+        charCountNum.textContent = contactMessage.value.length;
+      });
+    }
+    // NOTE: no backend wired yet — this just logs values for now.
+    // Swap this out for a real submit (e.g. GAS endpoint) later.
+    const contactSubmit = document.getElementById('contact-submit');
+    const contactAddress = document.getElementById('contact-address');
+    if (contactSubmit) {
+      contactSubmit.addEventListener('click', () => {
+        console.log('contact form (not yet wired to a backend):', {
+          method: methodLine.checked ? 'line' : 'mail',
+          message: contactMessage.value,
+          address: contactAddress.value
+        });
+      });
+    }
+
+    // Optional enhancement only: real OS-level lock.
+    // NOTE: this silently fails on iOS Safari (not supported there at all).
+    // The portrait/landscape switching above does NOT depend on this ---
+    // it works everywhere via the orientation media query regardless.
+    try {
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('portrait').catch(() => {});
+      }
+    } catch (e) {}
+  </script>
+
+</body>
+</html>
