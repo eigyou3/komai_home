@@ -19,24 +19,43 @@
             <h1 class="page-title">WORKS</h1>
             
             <div class="works-grid">
-                <a href="https://eigyou3.github.io/M_owners_house-koti-/" class="work-card" target="_blank" rel="noopener noreferrer">
+                <a href="https://" class="work-card" target="_blank" rel="noopener noreferrer">
 
                     <div class="work-thumb-wrapper">
-                        <img src="../images/works/case1/ogp.png" alt="施工事例1" class="work-thumb main-img">
-                        <img src="../images/works/case1/hover.png" alt="施工事例1" class="work-thumb sub-img">
+                        <img src="../images/works/!cs/ogp.png" alt="Coming soon" class="work-thumb active">
+                        <img src="../images/works/!cs/hover.png" alt="Coming soon" class="work-thumb">
+                        <img src="../images/works/!cs/hover2.png" alt="Coming soon" class="work-thumb">
+                        <img src="../images/works/!cs/hover3.png" alt="Coming soon" class="work-thumb">
                     </div>
-                    
+
                     <div class="work-info">
-                        <h2 class="work-title">暮らしに「＋」をデザインする</h2>
-                        <p class="work-tag">#旭川市 #注文住宅 #規格住宅 #二階建て</p>
+                        <h2 class="work-title">近日公開</h2>
+                        <p class="work-tag">#旭川市 #注文住宅 #二階建て</p>
                     </div>
                 </a>
-                
+
+                <a href="https://eigyou3.github.io/U_owners_house/" class="work-card" target="_blank" rel="noopener noreferrer">
+
+                    <div class="work-thumb-wrapper">
+                        <img src="../images/works/case3/ogp.png" alt="YORISOU_IE" class="work-thumb active">
+                        <img src="../images/works/case3/hover.png" alt="YORISOU_IE" class="work-thumb">
+                        <img src="../images/works/case3/hover2.png" alt="YORISOU_IE" class="work-thumb">
+                        <img src="../images/works/case3/hover3.png" alt="YORISOU_IE" class="work-thumb">
+                    </div>
+
+                    <div class="work-info">
+                        <h2 class="work-title">あなたの理想に寄り添う家。</h2>
+                        <p class="work-tag">#旭川市 #注文住宅 #平屋建て</p>
+                    </div>
+                </a>
+
                 <a href="https://eigyou3.github.io/K_owners_house/" class="work-card" target="_blank" rel="noopener noreferrer">
 
                     <div class="work-thumb-wrapper">
-                        <img src="../images/works/case2/ogp.png" alt="Kube" class="work-thumb main-img">
-                        <img src="../images/works/case2/hover.png" alt="Kube" class="work-thumb sub-img">
+                        <img src="../images/works/case2/ogp.png" alt="Kube" class="work-thumb active">
+                        <img src="../images/works/case2/hover.png" alt="Kube" class="work-thumb">
+                        <img src="../images/works/case2/hover2.png" alt="Kube" class="work-thumb">
+                        <img src="../images/works/case2/hover3.png" alt="Kube" class="work-thumb">
                     </div>
                     
                     <div class="work-info">
@@ -45,16 +64,18 @@
                     </div>
                 </a>
 
-                <a href="https://eigyou3.github.io/U_owners_house/" class="work-card" target="_blank" rel="noopener noreferrer">
+                <a href="https://eigyou3.github.io/M_owners_house-koti-/" class="work-card" target="_blank" rel="noopener noreferrer">
 
                     <div class="work-thumb-wrapper">
-                        <img src="../images/works/case3/ogp.png" alt="YORISOU_IE" class="work-thumb main-img">
-                        <img src="../images/works/case3/hover.png" alt="YORISOU_IE" class="work-thumb sub-img">
+                        <img src="../images/works/case1/ogp.png" alt="施工事例1" class="work-thumb active">
+                        <img src="../images/works/case1/hover.png" alt="施工事例1" class="work-thumb">
+                        <img src="../images/works/case1/hover2.png" alt="施工事例1" class="work-thumb">
+                        <img src="../images/works/case1/hover3.png" alt="施工事例1" class="work-thumb">
                     </div>
-
+                    
                     <div class="work-info">
-                        <h2 class="work-title">あなたの理想に寄り添う家。</h2>
-                        <p class="work-tag">#旭川市 #注文住宅 #平屋建て</p>
+                        <h2 class="work-title">暮らしに「＋」をデザインする</h2>
+                        <p class="work-tag">#旭川市 #注文住宅 #規格住宅 #二階建て</p>
                     </div>
                 </a>
             </div>
@@ -67,6 +88,77 @@
             <div>&copy; KOMAI HOME Co., Ltd. All right Reserved</div>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isHoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            const CYCLE_INTERVAL = 1200; // ms間隔で画像を巡回
+
+            document.querySelectorAll('.work-card').forEach((card) => {
+                const thumbs = card.querySelectorAll('.work-thumb');
+                if (thumbs.length <= 1) return;
+
+                let currentIndex = 0;
+                let timerId = null;
+
+                const setActive = (index) => {
+                    thumbs.forEach((thumb, i) => {
+                        thumb.classList.toggle('active', i === index);
+                    });
+                    card.classList.toggle('is-cycling', index !== 0);
+                };
+
+                const advance = () => {
+                    currentIndex = (currentIndex + 1) % thumbs.length;
+                    setActive(currentIndex);
+                };
+
+                const startCycle = () => {
+                    stopCycle();
+                    advance();
+                    timerId = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % thumbs.length;
+                        setActive(currentIndex);
+                    }, CYCLE_INTERVAL);
+                };
+
+                const stopCycle = () => {
+                    if (timerId) {
+                        clearInterval(timerId);
+                        timerId = null;
+                    }
+                    currentIndex = 0;
+                    setActive(0);
+                };
+
+                if (isHoverCapable) {
+                    card.addEventListener('mouseenter', startCycle);
+                    card.addEventListener('mouseleave', stopCycle);
+                } else if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                startCycle();
+                            } else {
+                                stopCycle();
+                            }
+                        });
+                    }, { threshold: 0.6 });
+                    observer.observe(card);
+                }
+
+                const worksGrid = document.querySelector('.works-grid');
+                if (worksGrid) {
+                    worksGrid.addEventListener('wheel', (e) => {
+                        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                            e.preventDefault();
+                            worksGrid.scrollLeft += e.deltaY;
+                        }
+                    }, { passive: false });
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
