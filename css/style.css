@@ -11,6 +11,7 @@
 
 body, html {
     height: 100vh;
+    height: 100dvh; /* モバイルのアドレスバー分のズレを補正 */
     width: 100vw;
     overflow: hidden;
     background-color: #111;
@@ -219,6 +220,7 @@ footer {
 .back-btn:hover { color: #fff; }
 .back-btn span { margin-right: 8px; font-size: 18px; }
 
+/* .sub-main：全下層ページ共通のベース定義（1箇所に統合） */
 .sub-main {
     padding: 100px 5% 40px;
     max-width: 1200px;
@@ -226,10 +228,24 @@ footer {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* デフォルトは縦センタリング（works.htmlなど用） */
     flex: 1;
-    min-height: 0;
+    min-height: 0; /* flexアイテムがcontentサイズで突っ張るのを防止 */
+    overflow-y: auto;
+    padding-bottom: 100px;
+    scrollbar-width: none; /* Firefoxでスクロールバー非表示 */
+    -webkit-overflow-scrolling: touch; /* iOSの慣性スクロール */
 }
+.sub-main::-webkit-scrollbar {
+    display: none; /* Chrome, Safari用スクロールバー非表示 */
+}
+
+/* FLOWページ専用：コンテンツが伸びても上から積み上がるようにする */
+.flow-main {
+    justify-content: flex-start;
+    padding-top: 100px;
+}
+
 .page-title {
     font-family: 'Jost', sans-serif;
     font-size: 32px;
@@ -331,15 +347,16 @@ footer {
 }
 
 /* =========================================
-   工期シミュレーターのUIデザイン
+   工期シミュレーターのUIデザイン（1箇所に統合）
 ========================================= */
 .simulator-box {
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 40px;
     border-radius: 12px;
     margin-bottom: 60px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .simulator-title {
@@ -377,11 +394,15 @@ footer {
 }
 
 .stylish-input {
-    background: #1a1a1a !important; 
-    color: #fff !important; 
-    border: 1px solid #444 !important; 
-    padding: 14px 16px; width: 100%; border-radius: 6px;
-    font-size: 16px; outline: none; cursor: pointer;
+    background: #1a1a1a !important;
+    color: #fff !important;
+    border: 1px solid #444 !important;
+    padding: 14px 16px;
+    width: 100%;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
     font-family: 'Jost', 'Noto Serif JP', sans-serif;
     color-scheme: dark;
     appearance: auto;
@@ -389,16 +410,17 @@ footer {
 .stylish-input:focus { border-color: #888 !important; }
 
 .calc-btn {
-    background: #fff; 
-    color: #000; 
+    background: #fff;
+    color: #000;
     border: none;
-    padding: 14px 30px; 
-    border-radius: 6px; 
+    padding: 14px 30px;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: 500; 
+    font-weight: 500;
     letter-spacing: 1px;
     transition: all 0.3s ease;
     height: 52px;
+    white-space: nowrap; /* ボタン文字の折り返し・切れ防止 */
 }
 
 .calc-btn:hover {
@@ -406,7 +428,7 @@ footer {
     transform: translateY(-2px);
 }
 
-/* --- ビジュアルタイムライン --- */
+/* --- ビジュアルタイムライン（1箇所に統合） --- */
 .timeline-result-area {
     margin-top: 20px;
 }
@@ -509,22 +531,6 @@ footer {
     font-size: 14px;
     color: #aaa;
     line-height: 1.6;
-}
-
-/* サブページのスクロール強制 */
-.sub-main {
-    overflow-y: auto;
-    padding-bottom: 100px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-}
-.sub-main::-webkit-scrollbar {
-    display: none;
-}
-
-.flow-main {
-    justify-content: flex-start;
-    padding-top: 100px;
 }
 
 /* =========================================
@@ -635,48 +641,4 @@ footer {
         flex: 0 0 150px;
         scroll-snap-align: start;
     }
-}
-/* シミュレーター UI */
-.simulator-box {
-    background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(12px);
-    padding: 40px; border-radius: 12px; margin-bottom: 60px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.simulator-title { font-family: 'Jost', sans-serif; font-size: 20px; letter-spacing: 3px; margin-bottom: 10px; }
-.simulator-desc { font-size: 14px; color: #aaa; margin-bottom: 30px; }
-.form-row { display: flex; gap: 20px; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; }
-.form-group { flex: 1; min-width: 200px; }
-.form-group label { display: block; margin-bottom: 8px; font-size: 13px; color: #888; letter-spacing: 1px; }
-
-.stylish-input {
-    background: #1a1a1a !important; color: #fff !important; 
-    border: 1px solid #444 !important; padding: 14px 16px; 
-    width: 100%; border-radius: 6px; font-size: 16px; 
-    cursor: pointer; color-scheme: dark;
-}
-.calc-btn {
-    background: #fff; color: #000; border: none; padding: 14px 30px; 
-    border-radius: 6px; cursor: pointer; font-weight: 500; height: 52px;
-}
-.calc-btn:hover { background: #ccc; }
-
-/* タイムライン */
-.timeline-result-area { margin-top: 20px; }
-.visual-timeline { position: relative; padding-left: 56px; padding-top: 10px; }
-.visual-timeline::before {
-    content: ''; position: absolute; top: 10px; bottom: 20px; left: 24px;
-    width: 2px; background: rgba(255, 255, 255, 0.1);
-}
-.v-node { position: relative; margin-bottom: 30px; }
-.v-icon-wrap {
-    position: absolute; left: -56px; top: 0; width: 48px; height: 48px;
-    border-radius: 50%; background: #111; border: 2px solid rgba(255, 255, 255, 0.2);
-    display: flex; align-items: center; justify-content: center; z-index: 2;
-}
-.v-node .material-symbols-outlined { font-family: 'Material Symbols Outlined' !important; color: #aaa; }
-.v-node.is-final .v-icon-wrap { background: #fff; border-color: #fff; }
-.v-node.is-final .material-symbols-outlined { color: #000; }
-.v-content {
-    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 24px; border-radius: 8px;
 }
