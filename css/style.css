@@ -241,7 +241,6 @@ footer {
 
 /* =========================================
    施工事例グリッド ＆ ホバーギミック
-   （縦スクロールなし方針のため常時横スクロール化）
 ========================================= */
 .works-grid {
     display: flex;
@@ -274,7 +273,6 @@ footer {
     overflow: hidden;
 }
 
-/* 画像を何枚重ねても対応できる巡回方式 */
 .work-thumb {
     position: absolute;
     top: 0; left: 0;
@@ -290,7 +288,6 @@ footer {
     transform: scale(1);
 }
 
-/* 巡回中（2枚目以降を表示中）は情報欄の背景を少し濃くする */
 .work-card.is-cycling .work-info {
     background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.3));
 }
@@ -315,9 +312,6 @@ footer {
     letter-spacing: 1px;
 }
 
-/* =========================================
-   スマホ用調整
-========================================= */
 @media (max-width: 768px) {
     .work-card {
         flex: 0 0 85%;
@@ -333,4 +327,354 @@ footer {
         padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
         font-size: 10px;
     }
+}
+
+/* =========================================
+   工期シミュレーターのUIデザイン
+========================================= */
+.simulator-box {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 12px;
+    margin-bottom: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.simulator-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.simulator-desc {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 1px;
+}
+
+.stylish-input {
+    background: #1a1a1a !important; 
+    color: #fff !important; 
+    border: 1px solid #444 !important; 
+    padding: 14px 16px; width: 100%; border-radius: 6px;
+    font-size: 16px; outline: none; cursor: pointer;
+    font-family: 'Jost', 'Noto Serif JP', sans-serif;
+    color-scheme: dark;
+    appearance: auto;
+}
+.stylish-input:focus { border-color: #888 !important; }
+
+.calc-btn {
+    background: #fff; 
+    color: #000; 
+    border: none;
+    padding: 14px 30px; 
+    border-radius: 6px; 
+    cursor: pointer;
+    font-weight: 500; 
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    height: 52px;
+}
+
+.calc-btn:hover {
+    background: #ccc;
+    transform: translateY(-2px);
+}
+
+/* --- ビジュアルタイムライン --- */
+.timeline-result-area {
+    margin-top: 20px;
+}
+
+.visual-timeline {
+    position: relative;
+    padding-left: 56px;
+    padding-top: 10px;
+}
+
+.visual-timeline::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 20px;
+    left: 24px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.v-node {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.v-icon-wrap {
+    position: absolute;
+    left: -56px;
+    top: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.v-node .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    color: #aaa;
+    font-size: 24px;
+    transition: color 0.4s ease;
+    white-space: nowrap;
+    font-weight: 300;
+}
+
+.v-node.is-final .v-icon-wrap {
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+.v-node.is-final .material-symbols-outlined {
+    color: #000;
+}
+
+.v-content {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.v-node:hover .v-content {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(8px);
+}
+
+.v-node:hover .v-icon-wrap {
+    border-color: #fff;
+}
+
+.v-node:hover .material-symbols-outlined {
+    color: #fff;
+}
+
+.v-date {
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.v-title {
+    font-size: 18px;
+    color: #eaeaea;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.v-desc {
+    font-size: 14px;
+    color: #aaa;
+    line-height: 1.6;
+}
+
+/* サブページのスクロール強制 */
+.sub-main {
+    overflow-y: auto;
+    padding-bottom: 100px;
+    scrollbar-width: none;
+}
+.sub-main::-webkit-scrollbar {
+    display: none;
+}
+
+.flow-main {
+    justify-content: flex-start;
+    padding-top: 100px;
+}
+
+/* =========================================
+   家づくりの流れ（コンパクト・一覧性重視）
+========================================= */
+.flow-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+.flow-step {
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 28px 16px 20px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.step-num {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #777;
+    margin-bottom: 14px;
+}
+
+.step-icon {
+    display: block;
+    font-size: 30px;
+    color: #eaeaea;
+    opacity: 0.85;
+    margin: 0 auto 14px;
+    font-weight: 300;
+}
+
+.step-title {
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    color: #fff;
+    margin: 0;
+}
+
+/* 説明文は初期状態では隠しておく */
+.step-desc-wrap {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease, margin-top 0.4s ease;
+}
+
+.step-desc {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #aaa;
+    padding-top: 16px;
+    text-align: left;
+}
+
+/* PC：ホバーで開く */
+@media (hover: hover) and (pointer: fine) {
+    .flow-step:hover,
+    .flow-step:focus-visible {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.25);
+        transform: translateY(-4px);
+    }
+    .flow-step:hover .step-desc-wrap,
+    .flow-step:focus-visible .step-desc-wrap {
+        max-height: 200px;
+        opacity: 1;
+        margin-top: 4px;
+    }
+}
+
+/* モバイル：タップで開く（JSがis-openを付与） */
+.flow-step.is-open {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+.flow-step.is-open .step-desc-wrap {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 4px;
+}
+
+/* タブレット・スマホ：横に5列は収まらないので横スクロールに切り替え */
+@media (max-width: 900px) {
+    .flow-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 14px;
+        padding-bottom: 10px;
+        scrollbar-width: none;
+    }
+    .flow-container::-webkit-scrollbar {
+        display: none;
+    }
+    .flow-step {
+        flex: 0 0 150px;
+        scroll-snap-align: start;
+    }
+}
+/* シミュレーター UI */
+.simulator-box {
+    background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(12px);
+    padding: 40px; border-radius: 12px; margin-bottom: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.simulator-title { font-family: 'Jost', sans-serif; font-size: 20px; letter-spacing: 3px; margin-bottom: 10px; }
+.simulator-desc { font-size: 14px; color: #aaa; margin-bottom: 30px; }
+.form-row { display: flex; gap: 20px; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; }
+.form-group { flex: 1; min-width: 200px; }
+.form-group label { display: block; margin-bottom: 8px; font-size: 13px; color: #888; letter-spacing: 1px; }
+
+.stylish-input {
+    background: #1a1a1a !important; color: #fff !important; 
+    border: 1px solid #444 !important; padding: 14px 16px; 
+    width: 100%; border-radius: 6px; font-size: 16px; 
+    cursor: pointer; color-scheme: dark;
+}
+.calc-btn {
+    background: #fff; color: #000; border: none; padding: 14px 30px; 
+    border-radius: 6px; cursor: pointer; font-weight: 500; height: 52px;
+}
+.calc-btn:hover { background: #ccc; }
+
+/* タイムライン */
+.timeline-result-area { margin-top: 20px; }
+.visual-timeline { position: relative; padding-left: 56px; padding-top: 10px; }
+.visual-timeline::before {
+    content: ''; position: absolute; top: 10px; bottom: 20px; left: 24px;
+    width: 2px; background: rgba(255, 255, 255, 0.1);
+}
+.v-node { position: relative; margin-bottom: 30px; }
+.v-icon-wrap {
+    position: absolute; left: -56px; top: 0; width: 48px; height: 48px;
+    border-radius: 50%; background: #111; border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex; align-items: center; justify-content: center; z-index: 2;
+}
+.v-node .material-symbols-outlined { font-family: 'Material Symbols Outlined' !important; color: #aaa; }
+.v-node.is-final .v-icon-wrap { background: #fff; border-color: #fff; }
+.v-node.is-final .material-symbols-outlined { color: #000; }
+.v-content {
+    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 24px; border-radius: 8px;
 }
