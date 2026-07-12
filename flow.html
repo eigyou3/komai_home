@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家づくりの流れ | KOMAI HOME</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <main class="sub-main flow-main">
+            <h1 class="page-title">FLOW</h1>
+            
+            <div class="simulator-box">
+                <h3 class="simulator-title">SCHEDULE SIMULATOR</h3>
+                <p class="simulator-desc">ご契約予定日と建物の種類から、完成までのロードマップを可視化します。</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ご契約予定日</label>
+                        <input type="date" id="contractDate" class="stylish-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>建物のタイプ</label>
+                        <select id="buildingType" class="stylish-input">
+                            <option value="4">平屋（工期目安: 4ヶ月）</option>
+                            <option value="6">二階建て（工期目安: 6ヶ月）</option>
+                        </select>
+                    </div>
+                    <button class="calc-btn" onclick="calculateSchedule()">ロードマップを生成</button>
+                </div>
+
+                <div id="result" class="timeline-result-area"></div>
+            </div>
+
+            <div class="flow-container">
+                <div class="flow-step" tabindex="0">
+                    <span class="step-num">01</span>
+                    <span class="material-symbols-outlined step-icon">forum</span>
+                    <h2 class="step-title">ご相談<br>ヒアリング</h2>
+                    <div class="step-desc-wrap">
+                        <p class="step-desc">理想の暮らしやこだわり、ご予算について丁寧にお伺いします。まずはここから、私たちの家づくりが始まります。</p>
+                    </div>
+                </div>
+                <div class="flow-step" tabindex="0">
+                    <span class="step-num">02</span>
+                    <span class="material-symbols-outlined step-icon">request_quote</span>
+                    <h2 class="step-title">プラン提案<br>お見積り</h2>
+                    <div class="step-desc-wrap">
+                        <p class="step-desc">ヒアリング内容をもとに、敷地の特性を活かしたプランと資金計画をご提案いたします。</p>
+                    </div>
+                </div>
+                <div class="flow-step" tabindex="0">
+                    <span class="step-num">03</span>
+                    <span class="material-symbols-outlined step-icon">edit_document</span>
+                    <h2 class="step-title">ご契約</h2>
+                    <div class="step-desc-wrap">
+                        <p class="step-desc">プランや資金計画にご納得いただけましたら、正式なご契約となります。ここから詳細な仕様決めがスタートします。</p>
+                    </div>
+                </div>
+                <div class="flow-step" tabindex="0">
+                    <span class="step-num">04</span>
+                    <span class="material-symbols-outlined step-icon">construction</span>
+                    <h2 class="step-title">着工<br>施工</h2>
+                    <div class="step-desc-wrap">
+                        <p class="step-desc">いよいよ建築が始まります。現場の安全管理を徹底し、職人が丁寧に施工を進めます。</p>
+                    </div>
+                </div>
+                <div class="flow-step" tabindex="0">
+                    <span class="step-num">05</span>
+                    <span class="material-symbols-outlined step-icon">vpn_key</span>
+                    <h2 class="step-title">完成<br>お引き渡し</h2>
+                    <div class="step-desc-wrap">
+                        <p class="step-desc">検査を経て、ついに完成です。新しい暮らしのスタートを、心からお祝いいたします。</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 工期計算スクリプト
+        function calculateSchedule() {
+            const dateInput = document.getElementById('contractDate').value;
+            if (!dateInput) { alert('ご契約予定日を選択してください。'); return; }
+
+            const buildDuration = parseInt(document.getElementById('buildingType').value); 
+            const baseDate = new Date(dateInput);
+
+            function getFormattedDate(addMonths) {
+                const d = new Date(baseDate.getTime());
+                d.setMonth(d.getMonth() + addMonths);
+                return `${d.getFullYear()}年 ${d.getMonth() + 1}月`;
+            }
+
+            const steps = [
+                { delay: 0, icon: "edit_document", title: "ご契約", desc: "本契約を締結し、家づくりが本格的にスタートします。" },
+                { delay: 1, icon: "architecture", title: "詳細打ち合わせ", desc: "壁紙、床材、設備などの具体的な仕様を決定していきます。" },
+                { delay: 2, icon: "forest", title: "地鎮祭・着工", desc: "工事の安全を祈願し、いよいよ基礎工事が始まります。" },
+                { delay: 3, icon: "foundation", title: "上棟（建前）", desc: "建物の骨組みが組み上がり、家の全体像が見えてきます。" },
+                { delay: 3 + Math.floor(buildDuration / 2), icon: "carpenter", title: "造作・内装工事", desc: "大工工事やクロスの施工など、内部の仕上げが進みます。" },
+                { delay: 2 + buildDuration, icon: "vpn_key", title: "完成・お引き渡し", desc: "社内検査を経て、新しいマイホームの鍵をお渡しします！" }
+            ];
+
+            const resultDiv = document.getElementById('result');
+            let htmlContent = '<div class="visual-timeline">';
+            
+            steps.forEach((step, index) => {
+                const isLast = index === steps.length - 1 ? 'is-final' : '';
+                htmlContent += `
+                    <div class="v-node ${isLast}">
+                        <div class="v-icon-wrap"><span class="material-symbols-outlined">${step.icon}</span></div>
+                        <div class="v-content">
+                            <div class="v-date">${getFormattedDate(step.delay)}</div>
+                            <h4 class="v-title">${step.title}</h4>
+                            <p class="v-desc">${step.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            htmlContent += '</div>';
+            
+            resultDiv.style.opacity = 0;
+            resultDiv.innerHTML = htmlContent;
+            setTimeout(() => {
+                resultDiv.style.transition = "opacity 0.6s ease";
+                resultDiv.style.opacity = 1;
+            }, 50);
+        }
+
+        // マウスホイールでの横スクロール制御（モバイル幅時のみ意味を持つ）
+        const container = document.querySelector('.flow-container');
+        if (container) {
+            container.addEventListener('wheel', (e) => {
+                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                    e.preventDefault();
+                    container.scrollLeft += e.deltaY;
+                }
+            }, { passive: false });
+        }
+
+        // モバイル：タップでステップの説明を開閉
+        const isHoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        if (!isHoverCapable) {
+            document.querySelectorAll('.flow-step').forEach((step) => {
+                step.addEventListener('click', () => {
+                    const wasOpen = step.classList.contains('is-open');
+                    document.querySelectorAll('.flow-step.is-open').forEach((s) => s.classList.remove('is-open'));
+                    if (!wasOpen) step.classList.add('is-open');
+                });
+            });
+        }
+    </script>
+</body>
+</html>
