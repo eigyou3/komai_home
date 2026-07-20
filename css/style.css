@@ -535,6 +535,33 @@ footer {
     color: #fff;
 }
 
+.filter-tag--extra {
+    display: none;
+}
+.work-filter.is-expanded .filter-tag--extra {
+    display: inline-flex;
+}
+
+.filter-tag-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+.filter-tag-more:hover {
+    border-color: var(--accent-border);
+}
+.filter-tag-more .material-symbols-outlined {
+    font-size: 16px;
+}
+
 /* フィルターで除外されたカードを畳んで隠す */
 .work-card.is-filtered-out {
     display: none;
