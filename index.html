@@ -345,10 +345,6 @@
                 }
             }
 
-            const state = loadState();
-            state.visited = state.visited || {};
-            const isUnlocked = TARGET_PAGES.every(id => state.visited[id]);
-
             const navItem = document.getElementById('giftNavItem');
             const navBtn = document.getElementById('giftNavBtn');
             const overlay = document.getElementById('giftModalOverlay');
@@ -364,9 +360,28 @@
                 already: document.getElementById('giftStepAlready'),
             };
 
-            if (navItem) {
-                navItem.classList.add(isUnlocked ? 'is-unlocked' : 'is-locked');
+            let isUnlocked = false;
+
+            // ロック状態の判定とボタン見た目の更新をまとめた関数
+            function refreshUnlockState() {
+                const state = loadState();
+                state.visited = state.visited || {};
+                isUnlocked = TARGET_PAGES.every(id => state.visited[id]);
+
+                if (navItem) {
+                    navItem.classList.remove('is-locked', 'is-unlocked');
+                    navItem.classList.add(isUnlocked ? 'is-unlocked' : 'is-locked');
+                }
             }
+
+            refreshUnlockState();
+
+            // 「戻る」ボタンでbfcacheから復元されたときに再チェックする
+            window.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    refreshUnlockState();
+                }
+            });
 
             function showStep(name) {
                 Object.keys(steps).forEach(key => {
