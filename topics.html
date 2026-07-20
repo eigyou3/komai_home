@@ -216,22 +216,48 @@
         // ==========================================
         function renderFilter(items) {
             const filterBar = document.getElementById('topicsFilter');
-            const allTags = [];
+
+            // タグごとの使用回数を集計
+            const tagCounts = {};
             items.forEach((item) => {
                 item.tags.forEach((tag) => {
-                    if (!allTags.includes(tag)) allTags.push(tag);
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
                 });
             });
 
-            if (allTags.length === 0) {
+            // 使用回数が多い順に並び替え
+            const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
+
+            if (sortedTags.length === 0) {
                 filterBar.innerHTML = '';
                 return;
             }
 
+            const VISIBLE_COUNT = 3; // 最初から見せるタグの数（だいたい1行分）
+            const visibleTags = sortedTags.slice(0, VISIBLE_COUNT);
+            const hiddenTags = sortedTags.slice(VISIBLE_COUNT);
+
+            const buildTagBtn = (tag, isExtra) =>
+                `<button class="filter-tag${isExtra ? ' filter-tag--extra' : ''}" data-filter="${escapeHtml(tag)}">#${escapeHtml(tag)}</button>`;
+
             filterBar.innerHTML = [
                 `<button class="filter-tag is-active" data-filter="all">すべて</button>`,
-                ...allTags.map(tag => `<button class="filter-tag" data-filter="${escapeHtml(tag)}">#${escapeHtml(tag)}</button>`)
+                ...visibleTags.map(tag => buildTagBtn(tag, false)),
+                ...hiddenTags.map(tag => buildTagBtn(tag, true)),
+                hiddenTags.length
+                    ? `<button class="filter-tag-more" id="filterMoreBtn" type="button">+${hiddenTags.length}<span class="material-symbols-outlined">expand_more</span></button>`
+                    : '',
             ].join('');
+
+            const moreBtn = document.getElementById('filterMoreBtn');
+            if (moreBtn) {
+                moreBtn.addEventListener('click', () => {
+                    const expanded = filterBar.classList.toggle('is-expanded');
+                    moreBtn.innerHTML = expanded
+                        ? `閉じる<span class="material-symbols-outlined">expand_less</span>`
+                        : `+${hiddenTags.length}<span class="material-symbols-outlined">expand_more</span>`;
+                });
+            }
         }
 
         document.getElementById('topicsFilter').addEventListener('click', (e) => {
