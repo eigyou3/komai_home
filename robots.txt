@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://komai-home.co.jp/sitemap.xml

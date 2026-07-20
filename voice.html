@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お客様の声 | KOMAI HOME</title>
+    <meta name="description" content="こまいホームでご入居されたお客様の声をご紹介します。">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KOMAI HOME">
+    <meta property="og:title" content="お客様の声 | KOMAI HOME">
+    <meta property="og:description" content="こまいホームでご入居されたお客様の声をご紹介します。">
+    <meta property="og:image" content="https://komai-home.co.jp/images/common/icon/ogp.png">
+    <meta property="og:url" content="https://komai-home.co.jp/voice.html">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="images/common/icon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/common/icon/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/common/icon/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/common/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/common/icon/icon-512.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="css/style.css?v=3">
+</head>
+<body>
+
+    <div class="wrapper">
+        <main class="sub-main">
+            <h1 class="page-title">VOICE</h1>
+            <p class="page-subtitle">〜 お客様の声 〜</p>
+
+            <!-- カード一覧は voices 配列からJSが自動生成する -->
+            <div class="voice-grid" id="voiceGrid"></div>
+        </main>
+
+        <footer>
+            <div class="social-icons">
+                <a href="about.html">ご案内</a>
+                <a href="contact.html">お問い合わせ</a>
+                <a href="https://www.instagram.com/komai2009/?" target="_blank" rel="noopener noreferrer">インスタ</a>
+                <a href="https://www.facebook.com/profile.php?id=100057272387014&locale=km_KH#" target="_blank" rel="noopener noreferrer">フェイスブック</a>
+            </div>
+            <div>&copy; KOMAI HOME Co., Ltd. All right Reserved</div>
+        </footer>
+        
+    </div>
+
+    <!-- モーダル本体（普段は非表示。中身はJSが差し込む） -->
+    <div class="voice-modal-overlay" id="voiceModalOverlay">
+        <div class="voice-modal">
+            <button class="voice-modal-close" id="voiceModalClose" aria-label="閉じる">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="voice-modal-media">
+                <img src="" alt="" id="voiceModalImg">
+            </div>
+            <div class="voice-modal-body">
+                <p class="voice-modal-house" id="voiceModalHouse"></p>
+                <h2 class="voice-modal-name" id="voiceModalName"></h2>
+                <div class="voice-qa-list" id="voiceModalQaList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // お客様の声データ：ここに1件ずつ追加・編集していく
+        // 質問(q)と回答(a)は人によって数・内容が違ってOK（自由形式）
+        // ==========================================
+        const voices = [
+            {
+                name: "h.u",
+                house: "旭川市 / hiraya / お引き渡し時",
+                image: "images/voice/voice3.png",
+                qa: [
+                    { q: "家を建てたい🏚️！と思ったきっかけはなんですか？", a: "家族が増え、今の住まいが手狭になったことがきっかけです。<br><br>\中古住宅や賃貸も検討しましたが、希望する広さや綺麗さを求めると家賃は月10万円以上。\それならマイホームを建てたいと思うようになりました。<br><br>\年齢のことも考え、「まずは住宅ローンの審査から」と行動を始めました。" },
+                    { q: "こまいホームに建築を依頼しようと思った決め手をずばり！教えてください。", a: "最初はハウスメーカー3社や住宅展示場を見学しましたが、予算内で希望を叶えるのは難しいと感じていました。<br><br>\そこで工務店にも相談してみようと思い、5社へ同じ内容で問い合わせを送ったところ、\ひときわ親身で温かく、人柄が伝わる返信をくださったのが、担当の森木さんでした。<br><br>\要望を一つひとつ丁寧に聞いてくださり、唯一「資金計画表」を作成していただけたことで、\見学したモデルハウスでは、キッチンの黒のマット水栓やライン照明、洗面台、寝室の間接照明など細部まで好みが詰まっていて、\こまいホームならではのこだわりにも惹かれ、「ここで建てたい」と自然に思えるようになりました。" },
+                    { q: "出会ってから約１年、担当スタッフへ伝えたい想いをお知らせください😌", a: "森木さんと出会っていなければ、私たちは家を建てていなかったと思います。<br><br>\何度もLINEで質問を送り、そのたびに丁寧に対応していただきました。<br><br>\人気の土地で迷っていた時には、雪の降る夕方にも現地まで足を運んでくださり、その行動力と親身な対応に夫婦ともに感動しました。<br><br>\家づくりだけでなく、さまざまな相談にも乗っていただき、本当に心強い存在でした。<br><br>\本当にありがとうございました。<br>\これからも末永くよろしくお願いします！！" },
+                    { q: "完成した家をご覧になられた感想", a: "子どもを寝かしつけた後、一人で何度も調べて悩みながら思い描いていた理想の暮らしが、ようやく現実になりました。<br><br>\正直、今でも夢のようです。<br><br>\インテリアには自信があっても、家づくりは想像以上に難しく、SNSの情報量に迷うこともたくさんありました。<br><br>\そんな時、戸松さんと森木さんが何度も軌道修正してくださり、その言葉を信じて本当に良かったと思っています。<br><br>\完成した家は「本当にかっこいい」と自信を持って言える、唯一無二の住まいになりました。<br><br>\森木さんと一緒に選んだ外壁は、私達夫婦の一番のお気に入りです。" },
+                    { q: "これからご建築をお考えのお客様に向けて一言お願いします！💭", a: "美味しいものも「誰と食べるか」、旅行も「誰と行くか」で満足度は大きく変わると思います。<br><br>\家づくりも同じで、「どこで建てるか」より「誰と建てるか」が本当に大切だと感じました。<br><br>\森木さん、戸松さんとの打ち合わせは、失敗する気がしないほど安心感がありました。<br><br>\ さらに、専属の大工さんや現場監督の皆さんも本当に頼もしく、\「安心してください」と笑顔で声を掛けてくださったことが今でも印象に残っています。<br><br>\社員の皆さんが一丸となって私たちの家づくりを支えてくださり、本当に感謝しています。<br><br>\SNSで施工事例や口コミが多くなくても、広告ではなく、お施主様とのつながりを大切にし、\「建てて終わり」ではない関係を築いているこまいホームだからこそ、安心して家づくりを任せることができました。" }
+                ]
+            },
+            {
+                name: "y.y",
+                house: "剣淵町 / hiyaya / 1年",
+                image: "images/voice/voice2.png",
+                qa: [
+                    { q: "家づくりで大切にしたこと、理想の暮らしなどをお聞かせください", a: "オープンキッチン、平屋、リビングの広さ、気密性を重視しました。" },
+                    { q: "こまいホームに建築を依頼しようと思った決め手はなんでしたか？", a: "気密性" },
+                    { q: "打ち合わせ中や、工事期間中で印象に残っていることがあればお聞かせください", a: "家づくりに携わっていただいた方々の対応がとても良かった" }
+                ]
+            },
+            {
+                name: "y.u",
+                house: "旭川市 / 2f / 4ヶ月",
+                image: "images/voice/voice1.png",
+                qa: [
+                    { q: "モデルハウスを見学した印象は？", a: "モデルハウスで感じた雰囲気そのままに、自分たちの家が仕上がっていく過程がとても楽しみでした。" },
+                    { q: "担当者は変わりましたか？", a: "最初から最後まで一貫して同じ方が担当してくださったので、細かい要望も伝えやすかったです。" },
+                    { q: "総合的な満足度は？", a: "理想に寄り添ってもらえたと感じています。" }
+                ]
+            }
+        ];
+
+        // ==========================================
+        // カード一覧の自動生成
+        // ==========================================
+        const voiceGrid = document.getElementById('voiceGrid');
+
+        voices.forEach((voice, index) => {
+            const previewAnswer = voice.qa[0] ? voice.qa[0].a : "";
+
+            const card = document.createElement('div');
+            card.className = 'voice-card';
+            card.innerHTML = `
+                <div class="voice-thumb">
+                    <img src="${voice.image}" alt="${voice.name}">
+                </div>
+                <div class="voice-card-body">
+                    <p class="voice-house">${voice.house}</p>
+                    <h2 class="voice-name">${voice.name}</h2>
+                    <p class="voice-excerpt">${previewAnswer}</p>
+                    <button class="voice-more-btn" data-index="${index}">
+                        すべての回答を見る（${voice.qa.length}件）
+                    </button>
+                </div>
+            `;
+            voiceGrid.appendChild(card);
+        });
+
+        // ==========================================
+        // モーダルの開閉
+        // ==========================================
+        const overlay = document.getElementById('voiceModalOverlay');
+        const modalImg = document.getElementById('voiceModalImg');
+        const modalHouse = document.getElementById('voiceModalHouse');
+        const modalName = document.getElementById('voiceModalName');
+        const modalQaList = document.getElementById('voiceModalQaList');
+
+        function openVoiceModal(index) {
+            const voice = voices[index];
+            modalImg.src = voice.image;
+            modalImg.alt = voice.name;
+            modalHouse.textContent = voice.house;
+            modalName.textContent = voice.name;
+
+            modalQaList.innerHTML = voice.qa.map(item => `
+                <div class="voice-qa-item">
+                    <p class="voice-qa-q">${item.q}</p>
+                    <p class="voice-qa-a">${item.a}</p>
+                </div>
+            `).join('');
+
+            overlay.classList.add('is-active');
+        }
+
+        function closeVoiceModal() {
+            overlay.classList.remove('is-active');
+        }
+
+        voiceGrid.addEventListener('click', (e) => {
+            const btn = e.target.closest('.voice-more-btn');
+            if (btn) openVoiceModal(Number(btn.dataset.index));
+        });
+
+        document.getElementById('voiceModalClose').addEventListener('click', closeVoiceModal);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeVoiceModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeVoiceModal();
+        });
+
+        // ==========================================
+        // マウスホイールでの横スクロール制御（works.htmlと同じ仕組み）
+        // ==========================================
+        voiceGrid.addEventListener('wheel', (e) => {
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                e.preventDefault();
+                voiceGrid.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+    </script>
+
+    <script>
+        (function () {
+            const PAGE_ID = 'voice'; 
+            const STORAGE_KEY = 'komaiGift';
+            const TARGET_PAGES = ['concept', 'works', 'voice', 'flow'];
+
+            function loadState() {
+                try {
+                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                } catch (e) {
+                    return {};
+                }
+            }
+            function saveState(state) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            }
+
+            const state = loadState();
+            state.visited = state.visited || {};
+
+            const wasComplete = TARGET_PAGES.every(id => state.visited[id]);
+            const showFirstVisitModal = !state.firstModalShown;
+
+            state.visited[PAGE_ID] = true;
+            if (showFirstVisitModal) state.firstModalShown = true;
+
+            const nowComplete = TARGET_PAGES.every(id => state.visited[id]);
+            const showUnlockModal = nowComplete && !wasComplete && !state.unlockModalShown;
+            if (showUnlockModal) state.unlockModalShown = true;
+
+            saveState(state);
+
+            if (!showFirstVisitModal && !showUnlockModal) return;
+
+            function buildModal(title, text) {
+                const overlay = document.createElement('div');
+                overlay.className = 'gift-modal-overlay';
+                overlay.innerHTML =
+                    '<div class="gift-modal">' +
+                        '<button type="button" class="gift-modal-close" aria-label="閉じる">' +
+                            '<span class="material-symbols-outlined">close</span>' +
+                        '</button>' +
+                        '<div class="gift-modal-body">' +
+                            '<p class="gift-modal-title">' + title + '</p>' +
+                            '<p class="gift-modal-text">' + text + '</p>' +
+                        '</div>' +
+                    '</div>';
+                document.body.appendChild(overlay);
+                requestAnimationFrame(function () { overlay.classList.add('is-active'); });
+
+                function close() {
+                    overlay.classList.remove('is-active');
+                    setTimeout(function () { overlay.remove(); }, 300);
+                }
+                overlay.querySelector('.gift-modal-close').addEventListener('click', close);
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) close();
+                });
+            }
+
+            if (showUnlockModal) {
+                buildModal(
+                    'ギフト獲得！',
+                    '4ページすべてご覧いただき、ありがとうございます。ギフトが解放されました。好きなタイミングでTOPページに戻って受け取ってください。'
+                );
+            } else if (showFirstVisitModal) {
+                buildModal(
+                    'ちょっとしたお知らせ',
+                    'コンセプト・施工事例・お客様の声・家づくりの流れ、4つのページすべてをご覧いただいた方に、ささやかなギフトをご用意しています。'
+                );
+            }
+        })();
+    </script>
+
+</body>
+</html>

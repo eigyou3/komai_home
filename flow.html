@@ -4,20 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家づくりの流れ | KOMAI HOME</title>
+    <meta name="description" content="こまいホームでの家づくりの流れ。ご契約予定日を入力すると、お引き渡しまでのロードマップをシミュレーションできます。">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KOMAI HOME">
+    <meta property="og:title" content="家づくりの流れ | KOMAI HOME">
+    <meta property="og:description" content="こまいホームでの家づくりの流れ。ご契約予定日を入力すると、お引き渡しまでのロードマップをシミュレーションできます。">
+    <meta property="og:image" content="https://komai-home.co.jp/images/common/icon/ogp.png">
+    <meta property="og:url" content="https://komai-home.co.jp/flow.html">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="images/common/icon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/common/icon/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/common/icon/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/common/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/common/icon/icon-512.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
     
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 
     <div class="wrapper">
         <main class="sub-main flow-main">
             <h1 class="page-title">FLOW</h1>
-            
+            <p class="page-subtitle">〜 ご契約までの流れ 〜</p>
+
             <div class="simulator-box">
                 <h3 class="simulator-title">SCHEDULE SIMULATOR</h3>
                 <p class="simulator-desc">ご契約予定日と建物の種類から、完成までのロードマップを可視化します。</p>
@@ -30,133 +46,320 @@
                     <div class="form-group">
                         <label>建物のタイプ</label>
                         <select id="buildingType" class="stylish-input">
-                            <option value="4">平屋（工期目安: 4ヶ月）</option>
-                            <option value="6">二階建て（工期目安: 6ヶ月）</option>
+                            <option value="0">平屋</option>
+                            <option value="1">二階建て</option>
                         </select>
                     </div>
                     <button class="calc-btn" onclick="calculateSchedule()">ロードマップを生成</button>
                 </div>
 
+                <!-- 契約前の流れ（日付なし・常時表示・画面幅に合わせて自動縮小） -->
+                <div class="pre-flow">
+                    <span class="pre-flow-label">契約前の流れ</span>
+                    <div class="pre-flow-viewport">
+                        <ul class="pre-flow-list">
+                            <li class="pre-flow-item">
+                                <span class="material-symbols-outlined">forum</span>
+                                <span>ご相談・ヒアリング</span>
+                            </li>
+                            <span class="pre-flow-arrow material-symbols-outlined">arrow_forward</span>
+                            <li class="pre-flow-item">
+                                <span class="material-symbols-outlined">request_quote</span>
+                                <span>土地のご提案</span>
+                            </li>
+                            <span class="pre-flow-arrow material-symbols-outlined">arrow_forward</span>
+                            <li class="pre-flow-item">
+                                <span class="material-symbols-outlined">house</span>
+                                <span>プランのご提案</span>
+                            </li>
+                            <span class="pre-flow-arrow material-symbols-outlined">arrow_forward</span>
+                            <li class="pre-flow-item"> 
+                                <span class="material-symbols-outlined">payments</span>
+                                <span>お見積り</span>
+                            </li>
+                            <span class="pre-flow-arrow material-symbols-outlined">arrow_forward</span>
+                            <li class="pre-flow-item is-goal">
+                                <span class="material-symbols-outlined">edit_document</span>
+                                <span>ご契約</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div id="result" class="timeline-result-area"></div>
             </div>
 
-            <div class="flow-container">
-                <div class="flow-step" tabindex="0">
-                    <span class="step-num">01</span>
-                    <span class="material-symbols-outlined step-icon">forum</span>
-                    <h2 class="step-title">ご相談<br>ヒアリング</h2>
-                    <div class="step-desc-wrap">
-                        <p class="step-desc">理想の暮らしやこだわり、ご予算について丁寧にお伺いします。まずはここから、私たちの家づくりが始まります。</p>
-                    </div>
-                </div>
-                <div class="flow-step" tabindex="0">
-                    <span class="step-num">02</span>
-                    <span class="material-symbols-outlined step-icon">request_quote</span>
-                    <h2 class="step-title">プラン提案<br>お見積り</h2>
-                    <div class="step-desc-wrap">
-                        <p class="step-desc">ヒアリング内容をもとに、敷地の特性を活かしたプランと資金計画をご提案いたします。</p>
-                    </div>
-                </div>
-                <div class="flow-step" tabindex="0">
-                    <span class="step-num">03</span>
-                    <span class="material-symbols-outlined step-icon">edit_document</span>
-                    <h2 class="step-title">ご契約</h2>
-                    <div class="step-desc-wrap">
-                        <p class="step-desc">プランや資金計画にご納得いただけましたら、正式なご契約となります。ここから詳細な仕様決めがスタートします。</p>
-                    </div>
-                </div>
-                <div class="flow-step" tabindex="0">
-                    <span class="step-num">04</span>
-                    <span class="material-symbols-outlined step-icon">construction</span>
-                    <h2 class="step-title">着工<br>施工</h2>
-                    <div class="step-desc-wrap">
-                        <p class="step-desc">いよいよ建築が始まります。現場の安全管理を徹底し、職人が丁寧に施工を進めます。</p>
-                    </div>
-                </div>
-                <div class="flow-step" tabindex="0">
-                    <span class="step-num">05</span>
-                    <span class="material-symbols-outlined step-icon">vpn_key</span>
-                    <h2 class="step-title">完成<br>お引き渡し</h2>
-                    <div class="step-desc-wrap">
-                        <p class="step-desc">検査を経て、ついに完成です。新しい暮らしのスタートを、心からお祝いいたします。</p>
-                    </div>
-                </div>
-            </div>
+            <!-- 利用回数カウンター（一番下） -->
+            <p class="usage-counter">
+                このシミュレーター、これまでに <span id="usage-counter-value">–</span> 回使われました
+            </p>
         </main>
+
+        <footer>
+            <div class="social-icons">
+                <a href="about.html">ご案内</a>
+                <a href="contact.html">お問い合わせ</a>
+                <a href="https://www.instagram.com/komai2009/?" target="_blank" rel="noopener noreferrer">インスタ</a>
+                <a href="https://www.facebook.com/profile.php?id=100057272387014&locale=km_KH#" target="_blank" rel="noopener noreferrer">フェイスブック</a>
+            </div>
+            <div>&copy; KOMAI HOME Co., Ltd. All right Reserved</div>
+        </footer>
+
     </div>
 
     <script>
-        // 工期計算スクリプト
-        function calculateSchedule() {
-            const dateInput = document.getElementById('contractDate').value;
-            if (!dateInput) { alert('ご契約予定日を選択してください。'); return; }
+    // 工期計算スクリプト
+            function calculateSchedule() {
+                const dateInput = document.getElementById('contractDate').value;
+                if (!dateInput) { alert('ご契約予定日を選択してください。'); return; }
 
-            const buildDuration = parseInt(document.getElementById('buildingType').value); 
-            const baseDate = new Date(dateInput);
+                // 0: 平屋, 1: 二階建て
+                const typeIndex = parseInt(document.getElementById('buildingType').value);
 
-            function getFormattedDate(addMonths) {
-                const d = new Date(baseDate.getTime());
-                d.setMonth(d.getMonth() + addMonths);
-                return `${d.getFullYear()}年 ${d.getMonth() + 1}月`;
+                const baseDate = new Date(dateInput);
+
+                // 契約日から累計何日後かを渡すと、「〇月上旬/中旬/下旬」の文字列を返す
+                function getFormattedDate(totalDays) {
+                    const d = new Date(baseDate.getTime());
+                    d.setDate(d.getDate() + totalDays);
+
+                    const day = d.getDate();
+                    let period;
+                    if (day <= 10) {
+                        period = "上旬～";
+                    } else if (day <= 20) {
+                        period = "中旬～";
+                    } else {
+                        period = "下旬～";
+                    }
+
+                    return `${d.getFullYear()}年 ${d.getMonth() + 1}月${period}`;
+                }
+
+                // ★ 長期休暇の判定：ここの日付範囲を変えれば毎年の休暇期間を調整できます
+                function isHoliday(date) {
+                    const m = date.getMonth() + 1; // 1〜12
+                    const d = date.getDate();
+
+                    // ゴールデンウィーク（4/29～5/5）
+                    if ((m === 4 && d >= 29) || (m === 5 && d <= 5)) return true;
+
+                    // お盆休み（8/13～8/16）
+                    if (m === 8 && d >=  13 && d <= 16) return true;
+
+                    // 年末年始（12/27～1/7）
+                    if (m === 12 && d >= 27) return true;
+                    if (m === 1 && d <= 7) return true;
+
+                    return false;
+                }
+
+                // 指定した開始日からnumDays日間のうち、休暇日が何日含まれるかを数える
+                function countHolidaysInRange(startDate, numDays) {
+                    let count = 0;
+                    for (let i = 0; i < numDays; i++) {
+                        const d = new Date(startDate.getTime());
+                        d.setDate(d.getDate() + i);
+                        if (isHoliday(d)) count++;
+                    }
+                    return count;
+                }
+
+                // 契約後の詳細ステップ
+                // ★ days：[平屋の日数, 二階建ての日数]。「この工程が完了し、次の工程に移るまで何日かかるか」を指定します
+                // ★ title・desc・icon も自由に書き換えてください
+                const steps = [
+                    { days: [0, 0],   icon: "edit_document",        title: "建物のご契約",                desc: "当社と建物契約を行い、たのしい家づくりが本格的にスタートします🤝" },
+                    { days: [0, 0],   icon: "edit_document",        title: "土地のご契約",                desc: "計画中の土地の売買契約を結ぶ🤝" },
+                    { days: [7, 7], icon: "account_balance",        title: "融資本申込み",                desc: "住宅ローンをご利用の場合、金融機関へ本申込みを行います。" },
+                    { days: [30, 70],   icon: "architecture",       title: "図面最終確定",                desc: "窓の高さや壁の位置など、図面の最終確認を行い、指定の機関に申請します✒️" },
+                    { days: [7, 7],   icon: "straighten",           title: "遣り方確認～地鎮祭（起工式）",  desc: "建物の配置を確認していただきます。<br>あわせて、この頃にご希望の方は地鎮祭（起工式）を行います🙏" },
+                    { days: [30, 30], icon: "construction",         title: "着工（基礎工事）",             desc: "いよいよ基礎工事が始まります！" },
+                    { days: [2, 2], icon: "layers",                 title: "土台敷き",                    desc: "当社専属大工による工事がスタートします。<br>基礎の上に木材が据えられ、建物の骨組みを組み上げる準備を行います。" },
+                    { days: [7, 7],  icon: "foundation",            title: "上棟",                        desc: "建物の骨組みが組み上がり、家の全体像が見えてきます。" },
+                    { days: [14, 14], icon: "window",               title: "外断熱工事",                  desc: "サッシ（窓や玄関ドア）、外断熱材（旭化成ネオマフォーム）を取り付けを行います。<br>当社独自の優れた『桁上断熱工法』を採用し、隙間を許さない徹底した高気密施工を行います。<br>家全体をすっぽりと包み込むことで、夏は涼しく冬は暖かい、一年中快適な住空間を実現します。この工程が完了すると、内部の工事に進みます。" },
+                    { days: [30, 40], icon: "carpenter",            title: "内部工事",                    desc: "内部工事では、お客様と当社専属コーディネーターとのお打ち合わせ内容をもとに造作工事を進めていきます。<br>この工程が完了したら大工さんの作業がすべて終了します。" },
+                    { days: [20, 20], icon: "imagesearch_roller",   title: "仕上げ工事",                  desc: "クロスや照明器具、スイッチやコンセントなどを取付けます。<br>内装、設備など最終的な仕上げを行います。" },
+                    { days: [0, 0],   icon: "request_quote",        title: "金消契約",                    desc: "金融機関にて住宅ローンの契約を行います。" },
+                    { days: [7, 7],   icon: "inventory",            title: "お引渡し準備",                desc: "室内外の美装完了後、工事に携わった施工業者による点検を行います✨️" },
+                    { days: [0, 0],   icon: "task_alt",             title: "完成・完了検査",              desc: "第三者機関による完了検査を実施します。" },
+                    { days: [0, 0],   icon: "vpn_key",              title: "お引渡し",                   desc: "お客様とこまいホームとの長いお付き合いが始まります。<br>末永く快適なご住まいをお届けいたします。" }
+                ];
+
+                const resultDiv = document.getElementById('result');
+                let htmlContent = '<div class="visual-timeline">';
+                let cumulativeDays = 0;
+
+                steps.forEach((step, index) => {
+                    const isLast = index === steps.length - 1 ? 'is-final' : '';
+                    htmlContent += `
+                        <div class="v-node ${isLast}">
+                            <div class="v-icon-wrap"><span class="material-symbols-outlined">${step.icon}</span></div>
+                            <div class="v-content">
+                                <div class="v-date">${getFormattedDate(cumulativeDays)}</div>
+                                <h4 class="v-title">${step.title}</h4>
+                                <p class="v-desc">${step.desc}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    const baseDays = step.days[typeIndex];
+                    const stepStartDate = new Date(baseDate.getTime());
+                    stepStartDate.setDate(stepStartDate.getDate() + cumulativeDays);
+                    const holidayExtra = countHolidaysInRange(stepStartDate, baseDays);
+
+                    cumulativeDays += baseDays + holidayExtra;
+                });
+                htmlContent += '</div>';
+                
+                resultDiv.style.opacity = 0;
+                resultDiv.innerHTML = htmlContent;
+                setTimeout(() => {
+                    resultDiv.style.transition = "opacity 0.6s ease";
+                    resultDiv.style.opacity = 1;
+                }, 50);
+
+                // Firestoreの利用回数カウンターを+1（読み込みに失敗していても他の機能に影響しないようoptional chaining）
+                window.incrementUsageCounter?.();
             }
 
-            const steps = [
-                { delay: 0, icon: "edit_document", title: "ご契約", desc: "本契約を締結し、家づくりが本格的にスタートします。" },
-                { delay: 1, icon: "architecture", title: "詳細打ち合わせ", desc: "壁紙、床材、設備などの具体的な仕様を決定していきます。" },
-                { delay: 2, icon: "forest", title: "地鎮祭・着工", desc: "工事の安全を祈願し、いよいよ基礎工事が始まります。" },
-                { delay: 3, icon: "foundation", title: "上棟（建前）", desc: "建物の骨組みが組み上がり、家の全体像が見えてきます。" },
-                { delay: 3 + Math.floor(buildDuration / 2), icon: "carpenter", title: "造作・内装工事", desc: "大工工事やクロスの施工など、内部の仕上げが進みます。" },
-                { delay: 2 + buildDuration, icon: "vpn_key", title: "完成・お引き渡し", desc: "社内検査を経て、新しいマイホームの鍵をお渡しします！" }
-            ];
+        // 契約前の流れ：画面幅に合わせて自動スケール（常に1行に収める）
+        function fitPreFlow() {
+            const viewport = document.querySelector('.pre-flow-viewport');
+            const list = document.querySelector('.pre-flow-list');
+            if (!viewport || !list) return;
 
-            const resultDiv = document.getElementById('result');
-            let htmlContent = '<div class="visual-timeline">';
-            
-            steps.forEach((step, index) => {
-                const isLast = index === steps.length - 1 ? 'is-final' : '';
-                htmlContent += `
-                    <div class="v-node ${isLast}">
-                        <div class="v-icon-wrap"><span class="material-symbols-outlined">${step.icon}</span></div>
-                        <div class="v-content">
-                            <div class="v-date">${getFormattedDate(step.delay)}</div>
-                            <h4 class="v-title">${step.title}</h4>
-                            <p class="v-desc">${step.desc}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            htmlContent += '</div>';
-            
-            resultDiv.style.opacity = 0;
-            resultDiv.innerHTML = htmlContent;
-            setTimeout(() => {
-                resultDiv.style.transition = "opacity 0.6s ease";
-                resultDiv.style.opacity = 1;
-            }, 50);
+            list.style.transform = 'none';
+            const naturalWidth = list.scrollWidth;
+            const availableWidth = viewport.clientWidth;
+            const scale = Math.min(1, availableWidth / naturalWidth);
+
+            list.style.transform = `scale(${scale})`;
+            list.style.transformOrigin = 'left top';
+            viewport.style.height = list.getBoundingClientRect().height + 'px';
         }
 
-        // マウスホイールでの横スクロール制御（モバイル幅時のみ意味を持つ）
-        const container = document.querySelector('.flow-container');
-        if (container) {
-            container.addEventListener('wheel', (e) => {
-                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                    e.preventDefault();
-                    container.scrollLeft += e.deltaY;
-                }
-            }, { passive: false });
-        }
-
-        // モバイル：タップでステップの説明を開閉
-        const isHoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-        if (!isHoverCapable) {
-            document.querySelectorAll('.flow-step').forEach((step) => {
-                step.addEventListener('click', () => {
-                    const wasOpen = step.classList.contains('is-open');
-                    document.querySelectorAll('.flow-step.is-open').forEach((s) => s.classList.remove('is-open'));
-                    if (!wasOpen) step.classList.add('is-open');
-                });
-            });
-        }
+        window.addEventListener('load', fitPreFlow);
+        window.addEventListener('resize', fitPreFlow);
     </script>
+
+    <!-- Firebase：利用回数カウンター -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            increment,
+            onSnapshot
+        } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAsKaG455c-q9E-S2Q9_iIllHLEykI_DBY",
+            authDomain: "komai-countup.firebaseapp.com",
+            projectId: "komai-countup",
+            storageBucket: "komai-countup.firebasestorage.app",
+            messagingSenderId: "172630591811",
+            appId: "1:172630591811:web:eea5701885962bd84e47f6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const counterRef = doc(db, "counters", "flowSimulator");
+
+        // 現在のカウントをリアルタイム表示
+        onSnapshot(counterRef, (snap) => {
+            const el = document.getElementById('usage-counter-value');
+            if (!el) return;
+            const count = snap.exists() ? (snap.data().count || 0) : 0;
+            el.textContent = count.toLocaleString();
+        }, (error) => {
+            console.error('カウンター取得エラー:', error);
+        });
+
+        // ボタンが押されるたびに呼び出す関数（グローバルに公開）
+        window.incrementUsageCounter = async function () {
+            try {
+                await setDoc(counterRef, { count: increment(1) }, { merge: true });
+            } catch (error) {
+                console.error('カウンター更新エラー:', error);
+            }
+        };
+    </script>
+
+    <script>
+        (function () {
+            const PAGE_ID = 'flow'; 
+            const STORAGE_KEY = 'komaiGift';
+            const TARGET_PAGES = ['concept', 'works', 'voice', 'flow'];
+
+            function loadState() {
+                try {
+                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                } catch (e) {
+                    return {};
+                }
+            }
+            function saveState(state) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            }
+
+            const state = loadState();
+            state.visited = state.visited || {};
+
+            const wasComplete = TARGET_PAGES.every(id => state.visited[id]);
+            const showFirstVisitModal = !state.firstModalShown;
+
+            state.visited[PAGE_ID] = true;
+            if (showFirstVisitModal) state.firstModalShown = true;
+
+            const nowComplete = TARGET_PAGES.every(id => state.visited[id]);
+            const showUnlockModal = nowComplete && !wasComplete && !state.unlockModalShown;
+            if (showUnlockModal) state.unlockModalShown = true;
+
+            saveState(state);
+
+            if (!showFirstVisitModal && !showUnlockModal) return;
+
+            function buildModal(title, text) {
+                const overlay = document.createElement('div');
+                overlay.className = 'gift-modal-overlay';
+                overlay.innerHTML =
+                    '<div class="gift-modal">' +
+                        '<button type="button" class="gift-modal-close" aria-label="閉じる">' +
+                            '<span class="material-symbols-outlined">close</span>' +
+                        '</button>' +
+                        '<div class="gift-modal-body">' +
+                            '<p class="gift-modal-title">' + title + '</p>' +
+                            '<p class="gift-modal-text">' + text + '</p>' +
+                        '</div>' +
+                    '</div>';
+                document.body.appendChild(overlay);
+                requestAnimationFrame(function () { overlay.classList.add('is-active'); });
+
+                function close() {
+                    overlay.classList.remove('is-active');
+                    setTimeout(function () { overlay.remove(); }, 300);
+                }
+                overlay.querySelector('.gift-modal-close').addEventListener('click', close);
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) close();
+                });
+            }
+
+            if (showUnlockModal) {
+                buildModal(
+                    'ギフト獲得！',
+                    '4ページすべてご覧いただき、ありがとうございます。ギフトが解放されました。好きなタイミングでTOPページに戻って受け取ってください。'
+                );
+            } else if (showFirstVisitModal) {
+                buildModal(
+                    'ちょっとしたお知らせ',
+                    'コンセプト・施工事例・お客様の声・家づくりの流れ、4つのページすべてをご覧いただいた方に、ささやかなギフトをご用意しています。'
+                );
+            }
+        })();
+    </script>
+
 </body>
 </html>

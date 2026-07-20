@@ -3,26 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOMAI HOME | 旭川の"暮らしをつくる"工務店</title>
+    <title>KOMAI HOME | 末永く快適に過ごせる住まいを届ける</title>
     <meta name="description" content="旭川の暮らしをつくる工務店、KOMAI HOME。">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KOMAI HOME">
+    <meta property="og:title" content="KOMAI HOME | 末永く快適に過ごせる住まいを届ける">
+    <meta property="og:description" content="旭川の暮らしをつくる工務店、KOMAI HOME。">
+    <meta property="og:image" content="https://komai-home.co.jp/images/common/icon/ogp.png">
+    <meta property="og:url" content="https://komai-home.co.jp/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="images/common/icon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/common/icon/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/common/icon/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/common/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/common/icon/icon-512.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
     
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=3">
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "HomeAndConstructionBusiness",
+            "name": "株式会社こまいホーム",
+            "alternateName": "KOMAI HOME",
+            "url": "https://komai-home.co.jp/",
+            "logo": "https://komai-home.co.jp/images/common/icon/icon-512.png",
+            "image": "https://komai-home.co.jp/images/common/icon/ogp.png",
+            "telephone": "+81-166-32-2009",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "東光5条2丁目1-27",
+                "addressLocality": "旭川市",
+                "addressRegion": "北海道",
+                "postalCode": "070-8345",
+                "addressCountry": "JP"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 43.751584776107,
+                "longitude": 142.389524764957
+            },
+            "openingHoursSpecification": {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                "opens": "08:30",
+                "closes": "17:30"
+            },
+            "sameAs": [
+                "https://www.instagram.com/komai2009/",
+                "https://www.facebook.com/profile.php?id=100057272387014"
+            ]
+        }
+    </script>
 </head>
 
 <body>
-    <div class="bg-image"></div>
+    <!-- 流れるお知らせヘッダー：ページ上部に固定の帯として常駐 -->
+    <div class="ticker-bar">
+        <div class="ticker-track">
+            <a href="https://eigyou3.github.io/news/" class="ticker-item" target="_blank" rel="noopener noreferrer">
+                <span class="material-symbols-outlined ticker-icon">campaign</span>
+                中東情勢における弊社の取組と、お客様への対応について
+            </a>
+            <a href="https://eigyou3.github.io/news/" class="ticker-item" target="_blank" rel="noopener noreferrer" aria-hidden="true">
+                <span class="material-symbols-outlined ticker-icon">campaign</span>
+                中東情勢における弊社の取組と、お客様への対応について
+            </a>
+            <a href="https://eigyou3.github.io/news/" class="ticker-item" target="_blank" rel="noopener noreferrer" aria-hidden="true">
+                <span class="material-symbols-outlined ticker-icon">campaign</span>
+                中東情勢における弊社の取組と、お客様への対応について
+            </a>
+        </div>
+    </div>
+
+    <!-- 横長画面用・縦長画面用で別々の背景を出し分け。
+         mp4がなければ poster に指定した画像がそのまま表示され続けます -->
+    <div class="bg-media bg-media--landscape">
+        <video class="bg-video" autoplay muted loop playsinline
+               poster="images/common/hero-bg-landscape.png">
+            <source src="images/common/hero-bg-landscape.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="bg-media bg-media--portrait">
+        <video class="bg-video" autoplay muted loop playsinline
+               poster="images/common/hero-bg-portrait.png">
+            <source src="images/common/hero-bg-portrait.mp4" type="video/mp4">
+        </video>
+    </div>
     
-    <div class="wrapper">
+    <div class="bg-overlay"></div>
+
+    <div class="wrapper wrapper--home">
         <div class="glass-panel">
             <h1 class="site-title">KOMAI HOME</h1>
-            <p class="concept-text">旭川の "暮らしをつくる" 工務店</p>
+            <p class="concept-text">” 末永く快適に過ごせる住まいを届ける ”</p>
             
             <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="topics.html" class="nav-link">
+                        <span class="material-symbols-outlined nav-icon">mail</span>
+                        <span class="nav-text">こまい通信</span>
+                        <span class="nav-meta" id="topicMeta"></span>
+                        <span class="material-symbols-outlined nav-arrow">arrow_outward</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="concept.html" class="nav-link">
                         <span class="material-symbols-outlined nav-icon">architecture</span>
@@ -31,14 +122,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="works/index.html" class="nav-link">
+                    <a href="works.html" class="nav-link">
                         <span class="material-symbols-outlined nav-icon">photo_library</span>
                         <span class="nav-text">施工事例</span>
                         <span class="material-symbols-outlined nav-arrow">arrow_outward</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="voice/index.html" class="nav-link">
+                    <a href="voice.html" class="nav-link">
                         <span class="material-symbols-outlined nav-icon">reviews</span>
                         <span class="nav-text">お客様の声</span>
                         <span class="material-symbols-outlined nav-arrow">arrow_outward</span>
@@ -59,23 +150,329 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="modelhouse.html" class="nav-link">
+                    <a href="https://eigyou3.github.io/model_north_villa/" class="nav-link">
                         <span class="material-symbols-outlined nav-icon">home</span>
                         <span class="nav-text">モデルハウス</span>
                         <span class="material-symbols-outlined nav-arrow">arrow_outward</span>
                     </a>
+                </li>
+                <li class="nav-item nav-item--gift" id="giftNavItem">
+                    <button type="button" class="nav-link" id="giftNavBtn">
+                        <span class="material-symbols-outlined nav-icon">card_giftcard</span>
+                        <span class="nav-text">ギフト</span>
+                        <span class="material-symbols-outlined nav-arrow">arrow_outward</span>
+                    </button>
                 </li>
             </ul>
         </div>
 
         <footer>
             <div class="social-icons">
-                <a href="#">Instagram</a>
-                <a href="#">Facebook</a>
-                <a href="#">Staff Blog</a>
+                <a href="about.html">ご案内</a>
+                <a href="contact.html">お問い合わせ</a>
+                <a href="https://www.instagram.com/komai2009/?" target="_blank" rel="noopener noreferrer">インスタ</a>
+                <a href="https://www.facebook.com/profile.php?id=100057272387014&locale=km_KH#" target="_blank" rel="noopener noreferrer">フェイスブック</a>
             </div>
             <div>&copy; KOMAI HOME Co., Ltd. All right Reserved</div>
         </footer>
     </div>
+
+    <!-- ギフトモーダル -->
+    <div class="gift-modal-overlay" id="giftModalOverlay">
+        <div class="gift-modal">
+            <button type="button" class="gift-modal-close" id="giftModalClose" aria-label="閉じる">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="gift-modal-body">
+                <!-- 未達成時の案内 -->
+                <div id="giftStepLocked">
+                    <p class="gift-modal-title">ＨＰ閲覧特典</p>
+                    <p class="gift-modal-text">コンセプト・施工事例・お客様の声・家づくりの流れ、<br>4つのページすべてをご覧いただいた方に、ささやかなギフトをご用意しています。<br><br>ぜひ巡ってみてください。</p>
+                </div>
+
+                <!-- 達成後：状況選択 -->
+                <div id="giftStepChoice" hidden>
+                    <p class="gift-modal-title">ギフトの受け取り</p>
+                    <p class="gift-modal-text">現在のご状況を教えてください。</p>
+                    <div class="gift-choice-list">
+                        <label class="gift-choice">
+                            <input type="radio" name="giftStatus" value="ob">
+                            すでにお引き渡し済みの方
+                        </label>
+                        <label class="gift-choice">
+                            <input type="radio" name="giftStatus" value="considering">
+                            ご建築を検討中の方
+                        </label>
+                    </div>
+                    <button type="button" class="subscribe-btn gift-decide-btn" id="giftDecideBtn" disabled>決定</button>
+                </div>
+
+                <!-- お引き渡し済みの方向け -->
+                <div id="giftStepOb" hidden>
+                    <p class="gift-modal-title">You too, me too をご活用ください</p>
+                    <p class="gift-modal-text">お引き渡し済みのお客様には、「You too, me too」よりモデル紹介をいただけますと、ギフトを差し上げております。<br>ぜひこちらをご活用くださいませ。</p>
+                    <button type="button" class="subscribe-btn" id="giftObOpenBtn">You too, me too を開く</button>
+                </div>
+
+                <!-- 検討中の方向け：条件確認 -->
+                <div id="giftStepConditionCheck" hidden>
+                    <p class="gift-modal-title">ギフト受け取りの条件</p>
+                    <p class="gift-modal-text">メールアドレスをご登録いただくと、当社担当スタッフよりご確認のメールをお送りいたしますのでご対応いただきますようお願いいたします。<br>よろしければ次へお進みください。</p>
+                    <button type="button" class="subscribe-btn" id="giftConditionOkBtn">同意して次へ</button>
+                </div>
+
+                <!-- 検討中の方向け：メール入力 -->
+                <div id="giftStepForm" hidden>
+                    <p class="gift-modal-title">メールアドレスをご入力ください</p>
+                    <form class="subscribe-form" id="giftForm">
+                        <input type="email" class="subscribe-input" id="giftEmailInput" placeholder="you@example.com" required>
+                        <button type="submit" class="subscribe-btn" id="giftSubmitBtn">送信</button>
+                    </form>
+                    <p class="subscribe-message" id="giftFormMessage"></p>
+                </div>
+
+                <!-- 完了 -->
+                <div id="giftStepDone" hidden>
+                    <p class="gift-modal-title">ありがとうございます</p>
+                    <p class="gift-modal-text">ギフトのお申し込みを受け付けました。担当者よりご連絡いたします。</p>
+                </div>
+
+                <!-- 申請済みの方向け -->
+                <div id="giftStepAlready" hidden>
+                    <p class="gift-modal-title">申請済みです</p>
+                    <p class="gift-modal-text">すでにギフトをお申し込みいただいています。担当者よりご連絡いたしますので、今しばらくお待ちください。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // グラスモーフィズムパネル：画面が原寸(natural size)より狭い場合、
+        // 内部の比率を保ったまま丸ごとscale()で縮小する（写真のように相似形で縮む）
+        function fitGlassPanel() {
+            const wrapperEl = document.querySelector('.wrapper');
+            const panel = document.querySelector('.glass-panel');
+            if (!wrapperEl || !panel) return;
+
+            panel.style.transform = 'none';
+
+            const wrapperStyle = getComputedStyle(wrapperEl);
+            const panelStyle = getComputedStyle(panel);
+
+            const paddingRight = parseFloat(wrapperStyle.paddingRight) || 0;
+            const marginLeft = parseFloat(panelStyle.marginLeft) || 0;
+
+            const availableWidth = wrapperEl.clientWidth - paddingRight - marginLeft;
+            const naturalWidth = panel.scrollWidth; // パネルの原寸（固定pxで設計した本来の幅）
+
+            const scale = Math.min(0.7, availableWidth / naturalWidth);
+            panel.style.transform = `scale(${scale})`;
+            panel.style.transformOrigin = 'left center'; // 左端・縦中央を基準に縮小
+        }
+
+        window.addEventListener('load', fitGlassPanel);
+        window.addEventListener('resize', fitGlassPanel);
+
+        // 「こまい通信」の最新更新日を取得して表示する
+        (function loadTopicMeta() {
+            const SPREADSHEET_ID = '1CMLwoz1r7VQ4ENsy1A3ipcvf7DoGsOFsd1oIkTsgzl0';
+            const SHEET_NAME = 'HP用_お知らせ投稿用';
+            const NEW_THRESHOLD_DAYS = 3; // NEW!を出す基準（日数）
+
+            const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(text => {
+                    const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+                    const rows = json.table.rows;
+
+                    // 投稿日(B列) ／ タイトル(C列)。タイトルが空の行は除外
+                    const items = rows
+                        .map(row => {
+                            const cells = row.c;
+                            return {
+                                date: cells[1] ? (cells[1].f || cells[1].v) : '',
+                                title: cells[2] ? cells[2].v : '',
+                            };
+                        })
+                        .filter(item => item.title);
+
+                    if (items.length === 0) return;
+
+                    // ★変更点：行の並び順ではなく、投稿日(date)そのものが一番新しいものを探す
+                    let latest = null;
+                    let latestTime = -Infinity;
+
+                    items.forEach(item => {
+                        const d = new Date(item.date);
+                        if (isNaN(d.getTime())) return;
+                        if (d.getTime() > latestTime) {
+                            latestTime = d.getTime();
+                            latest = d;
+                        }
+                    });
+
+                    if (!latest) return;
+
+                    const dateLabel = `${latest.getMonth() + 1}/${latest.getDate()} up!`;
+                    const daysAgo = Math.floor((new Date() - latest) / (1000 * 60 * 60 * 24));
+                    const isNew = daysAgo <= NEW_THRESHOLD_DAYS;
+
+                    const meta = document.getElementById('topicMeta');
+                    if (!meta) return;
+                    meta.innerHTML = isNew
+                        ? `${dateLabel} <span class="nav-badge">NEW</span>`
+                        : dateLabel;
+                })
+                .catch(err => console.error('こまい通信の更新情報取得に失敗:', err));
+        })();
+
+        // ==========================================
+        // ギフト機能
+        // ==========================================
+        (function () {
+            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzeTkwi6mABKBoN0CYcfzVJNyfscRcPszjli48TTMn6cX4WtWz3WY5ArXCwpyyJQNUlwA/exec';
+            const REFERRAL_URL = 'https://eigyou3.github.io/referral_form/';
+            const STORAGE_KEY = 'komaiGift';
+            const TARGET_PAGES = ['concept', 'works', 'voice', 'flow'];
+
+            function loadState() {
+                try {
+                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                } catch (e) {
+                    return {};
+                }
+            }
+
+            const state = loadState();
+            state.visited = state.visited || {};
+            const isUnlocked = TARGET_PAGES.every(id => state.visited[id]);
+
+            const navItem = document.getElementById('giftNavItem');
+            const navBtn = document.getElementById('giftNavBtn');
+            const overlay = document.getElementById('giftModalOverlay');
+            const closeBtn = document.getElementById('giftModalClose');
+
+            const steps = {
+                locked: document.getElementById('giftStepLocked'),
+                choice: document.getElementById('giftStepChoice'),
+                ob: document.getElementById('giftStepOb'),
+                conditionCheck: document.getElementById('giftStepConditionCheck'),
+                form: document.getElementById('giftStepForm'),
+                done: document.getElementById('giftStepDone'),
+                already: document.getElementById('giftStepAlready'),
+            };
+
+            if (navItem) {
+                navItem.classList.add(isUnlocked ? 'is-unlocked' : 'is-locked');
+            }
+
+            function showStep(name) {
+                Object.keys(steps).forEach(key => {
+                    if (steps[key]) steps[key].hidden = (key !== name);
+                });
+            }
+
+            function openModal() {
+                showStep(isUnlocked ? 'choice' : 'locked');
+                if (overlay) overlay.classList.add('is-active');
+            }
+
+            function closeModal() {
+                if (overlay) overlay.classList.remove('is-active');
+            }
+
+            if (navBtn) {
+                navBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openModal();
+                });
+            }
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            if (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) closeModal();
+                });
+            }
+
+            // OB／検討中の選択 → 決定ボタンの活性化
+            const decideBtn = document.getElementById('giftDecideBtn');
+            document.querySelectorAll('input[name="giftStatus"]').forEach(radio => {
+                radio.addEventListener('change', function () {
+                    if (decideBtn) decideBtn.disabled = false;
+                });
+            });
+
+            if (decideBtn) {
+                decideBtn.addEventListener('click', function () {
+                    const selected = document.querySelector('input[name="giftStatus"]:checked');
+                    if (!selected) return;
+                    showStep(selected.value === 'ob' ? 'ob' : 'conditionCheck');
+                });
+            }
+
+            // お引き渡し済みの方 → You too, me too を新しいタブで開く
+            const obOpenBtn = document.getElementById('giftObOpenBtn');
+            if (obOpenBtn) {
+                obOpenBtn.addEventListener('click', function () {
+                    window.open(REFERRAL_URL, '_blank', 'noopener');
+                    closeModal();
+                });
+            }
+
+            // 検討中の方 → 条件確認 → フォームへ
+            const conditionOkBtn = document.getElementById('giftConditionOkBtn');
+            if (conditionOkBtn) {
+                conditionOkBtn.addEventListener('click', function () {
+                    showStep('form');
+                });
+            }
+
+            // 検討中の方 → メール送信（GASの購読エンドポイントを type=gift で流用）
+            const giftForm = document.getElementById('giftForm');
+            const giftEmailInput = document.getElementById('giftEmailInput');
+            const giftSubmitBtn = document.getElementById('giftSubmitBtn');
+            const giftFormMessage = document.getElementById('giftFormMessage');
+
+            if (giftForm) {
+                giftForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const email = (giftEmailInput.value || '').trim();
+                    if (!email) return;
+
+                    giftSubmitBtn.disabled = true;
+                    if (giftFormMessage) {
+                        giftFormMessage.textContent = '送信中...';
+                        giftFormMessage.className = 'subscribe-message';
+                    }
+
+                    fetch(GAS_WEB_APP_URL, {
+                        method: 'POST',
+                        body: new URLSearchParams({ email: email, type: 'gift' }),
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.result === 'success') {
+                                showStep(data.alreadyApplied ? 'already' : 'done');
+                            } else {
+                                if (giftFormMessage) {
+                                    giftFormMessage.textContent = data.message || '送信に失敗しました。時間をおいて再度お試しください。';
+                                    giftFormMessage.className = 'subscribe-message is-error';
+                                }
+                                giftSubmitBtn.disabled = false;
+                            }
+                        })
+                        .catch(() => {
+                            if (giftFormMessage) {
+                                giftFormMessage.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+                                giftFormMessage.className = 'subscribe-message is-error';
+                            }
+                            giftSubmitBtn.disabled = false;
+                        });
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

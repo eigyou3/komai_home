@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>こまい通信 | KOMAI HOME</title>
+    <meta name="description" content="こまいホームからの最新のお知らせ・ニュース。メールでの購読も可能です。">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KOMAI HOME">
+    <meta property="og:title" content="こまい通信 | KOMAI HOME">
+    <meta property="og:description" content="こまいホームからの最新のお知らせ・ニュース。メールでの購読も可能です。">
+    <meta property="og:image" content="https://komai-home.co.jp/images/common/icon/ogp.png">
+    <meta property="og:url" content="https://komai-home.co.jp/topics.html">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="images/common/icon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/common/icon/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/common/icon/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/common/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/common/icon/icon-512.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="css/style.css?v=3">
+</head>
+<body>
+
+    <div class="wrapper">
+        <main class="sub-main topics-main">
+            <h1 class="page-title">TOPICS</h1>
+            <p class="page-subtitle">〜 こまい通信 〜</p>
+
+            <!-- メール購読フォーム -->
+            <div class="subscribe-box">
+                <p class="subscribe-text">新着投稿をメールでお届けします</p>
+                <form id="subscribeForm" class="subscribe-form">
+                    <input type="email" id="subscribeEmail" class="subscribe-input" placeholder="メールアドレス" required>
+                    <button type="submit" class="subscribe-btn">購読する</button>
+                </form>
+                <p class="subscribe-message" id="subscribeMessage"></p>
+            </div>
+
+            <!-- ハッシュタグ絞り込みフィルター -->
+            <div class="work-filter" id="topicsFilter"></div>
+
+            <div class="topics-grid" id="topicsGrid">
+                <p class="topics-loading">読み込み中...</p>
+            </div>
+        </main>
+
+        <footer>
+            <div class="social-icons">
+                <a href="about.html">ご案内</a>
+                <a href="contact.html">お問い合わせ</a>
+                <a href="https://www.instagram.com/komai2009/?" target="_blank" rel="noopener noreferrer">インスタ</a>
+                <a href="https://www.facebook.com/profile.php?id=100057272387014&locale=km_KH#" target="_blank" rel="noopener noreferrer">フェイスブック</a>
+            </div>
+            <div>&copy; KOMAI HOME Co., Ltd. All right Reserved</div>
+        </footer>
+    </div>
+
+    <!-- モーダル本体（普段は非表示。中身はJSが差し込む） -->
+    <div class="voice-modal-overlay" id="topicsModalOverlay">
+        <div class="voice-modal">
+            <button class="voice-modal-close" id="topicsModalClose" aria-label="閉じる">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="voice-modal-media" id="topicsModalMediaWrap">
+                <img src="" alt="" id="topicsModalImg">
+            </div>
+            <div class="voice-modal-body">
+                <p class="voice-modal-house" id="topicsModalDate"></p>
+                <h2 class="voice-modal-name" id="topicsModalTitle"></h2>
+                <p class="topics-modal-text" id="topicsModalText"></p>
+                <a href="#" id="topicsModalLink" class="topics-modal-link" target="_blank" rel="noopener noreferrer">
+                    🔗 詳細はこちらです
+                    <span class="material-symbols-outlined">arrow_outward</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ★スプレッドシートID・シート名
+        const SPREADSHEET_ID = '1CMLwoz1r7VQ4ENsy1A3ipcvf7DoGsOFsd1oIkTsgzl0';
+        const SHEET_NAME = 'HP用_お知らせ投稿用'; // タブ名が変わったらここも変更する
+
+        // カード一覧での本文の表示文字数
+        const EXCERPT_LENGTH = 60;
+
+        let topicsItems = [];
+
+        function extractDriveFileId(url) {
+            if (!url) return null;
+            const match = url.match(/[-\w]{25,}/);
+            return match ? match[0] : null;
+        }
+
+        function buildThumbnailUrl(driveUrl, size = 'w1000') {
+            const id = extractDriveFileId(driveUrl);
+            if (!id) return null;
+            return `https://drive.google.com/thumbnail?id=${id}&sz=${size}`;
+        }
+
+        function formatDate(raw) {
+            if (!raw) return '';
+            const d = new Date(raw);
+            if (isNaN(d.getTime())) return raw;
+            return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function makeExcerpt(str) {
+            if (!str) return '';
+            if (str.length <= EXCERPT_LENGTH) return str;
+            return str.slice(0, EXCERPT_LENGTH) + '…';
+        }
+
+        // 「タグ1,タグ2」「タグ1、タグ2」どちらの区切りにも対応
+        function parseTags(raw) {
+            if (!raw) return [];
+            return raw
+                .split(/[,、]/)
+                .map(t => t.trim())
+                .filter(Boolean);
+        }
+
+        async function loadTopics() {
+            const grid = document.getElementById('topicsGrid');
+            const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+            try {
+                const res = await fetch(url);
+                const text = await res.text();
+                const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+                const rows = json.table.rows;
+
+                // 列の並び：A タイムスタンプ / B 投稿日 / C タイトル / D 本文 / E 画像 / F ハッシュタグ / G リンク
+                topicsItems = rows
+                    .map(row => {
+                        const cells = row.c;
+                        return {
+                            date: cells[1] ? (cells[1].f || cells[1].v) : '',
+                            title: cells[2] ? cells[2].v : '',
+                            body: cells[3] ? cells[3].v : '',
+                            image: cells[4] ? cells[4].v : '',
+                            tags: parseTags(cells[5] ? cells[5].v : ''),
+                            link: cells[6] ? cells[6].v : '',
+                        };
+                    })
+                    .filter(item => item.title);
+
+                topicsItems.sort((a, b) => {
+                    const dateA = new Date(a.date).getTime();
+                    const dateB = new Date(b.date).getTime();
+                    return dateB - dateA;
+                });
+                
+                if (topicsItems.length === 0) {
+                    grid.innerHTML = '<p class="topics-empty">まだお知らせはありません。</p>';
+                    renderFilter([]);
+                    return;
+                }
+
+                renderFilter(topicsItems);
+                renderCards(topicsItems);
+
+            } catch (err) {
+                console.error('お知らせの読み込みに失敗しました:', err);
+                grid.innerHTML = '<p class="topics-empty">お知らせの読み込みに失敗しました。時間をおいて再度お試しください。</p>';
+            }
+        }
+
+        function renderCards(items) {
+            const grid = document.getElementById('topicsGrid');
+
+            if (items.length === 0) {
+                grid.innerHTML = '<p class="topics-empty">該当するお知らせがありません。</p>';
+                return;
+            }
+
+            grid.innerHTML = items.map((item) => {
+                const originalIndex = topicsItems.indexOf(item);
+                const thumb = buildThumbnailUrl(item.image, 'w500');
+                const thumbHtml = thumb
+                    ? `<div class="topics-thumb"><img src="${thumb}" alt="${escapeHtml(item.title)}" loading="lazy"></div>`
+                    : '';
+                const tagsHtml = `<p class="topics-tags">${item.tags.length ? item.tags.map(t => `#${escapeHtml(t)}`).join(' ') : ''}</p>`;
+                return `
+                    <div class="topics-card" data-index="${originalIndex}">
+                        ${thumbHtml}
+                        <div class="topics-card-body">
+                            <p class="topics-date">${formatDate(item.date)}</p>
+                            <h2 class="topics-title">${escapeHtml(item.title)}</h2>
+                            <p class="topics-text">${escapeHtml(makeExcerpt(item.body))}</p>
+                            ${tagsHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==========================================
+        // ハッシュタグ絞り込みフィルター
+        // ==========================================
+        function renderFilter(items) {
+            const filterBar = document.getElementById('topicsFilter');
+            const allTags = [];
+            items.forEach((item) => {
+                item.tags.forEach((tag) => {
+                    if (!allTags.includes(tag)) allTags.push(tag);
+                });
+            });
+
+            if (allTags.length === 0) {
+                filterBar.innerHTML = '';
+                return;
+            }
+
+            filterBar.innerHTML = [
+                `<button class="filter-tag is-active" data-filter="all">すべて</button>`,
+                ...allTags.map(tag => `<button class="filter-tag" data-filter="${escapeHtml(tag)}">#${escapeHtml(tag)}</button>`)
+            ].join('');
+        }
+
+        document.getElementById('topicsFilter').addEventListener('click', (e) => {
+            const btn = e.target.closest('.filter-tag');
+            if (!btn) return;
+
+            document.querySelectorAll('#topicsFilter .filter-tag').forEach(b => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+
+            const filter = btn.dataset.filter;
+            const filtered = filter === 'all'
+                ? topicsItems
+                : topicsItems.filter(item => item.tags.includes(filter));
+
+            renderCards(filtered);
+
+            const grid = document.getElementById('topicsGrid');
+            grid.scrollTo({ left: 0, behavior: 'smooth' });
+        });
+
+        // ==========================================
+        // モーダルの開閉
+        // ==========================================
+        const overlay = document.getElementById('topicsModalOverlay');
+        const modalMediaWrap = document.getElementById('topicsModalMediaWrap');
+        const modalImg = document.getElementById('topicsModalImg');
+        const modalDate = document.getElementById('topicsModalDate');
+        const modalTitle = document.getElementById('topicsModalTitle');
+        const modalText = document.getElementById('topicsModalText');
+        const modalLink = document.getElementById('topicsModalLink');
+
+        function openTopicsModal(index) {
+            const item = topicsItems[index];
+            const fullImg = buildThumbnailUrl(item.image, 'w1200');
+
+            if (fullImg) {
+                modalImg.src = fullImg;
+                modalImg.alt = item.title;
+                modalMediaWrap.style.display = 'block';
+            } else {
+                modalMediaWrap.style.display = 'none';
+            }
+
+            modalDate.textContent = formatDate(item.date);
+            modalTitle.textContent = item.title;
+            modalText.textContent = item.body;
+
+            if (item.link) {
+                modalLink.href = item.link;
+                modalLink.style.display = 'inline-flex';
+            } else {
+                modalLink.style.display = 'none';
+            }
+
+            overlay.classList.add('is-active');
+        }
+
+        function closeTopicsModal() {
+            overlay.classList.remove('is-active');
+        }
+
+        document.getElementById('topicsGrid').addEventListener('click', (e) => {
+            const card = e.target.closest('.topics-card');
+            if (card) openTopicsModal(Number(card.dataset.index));
+        });
+
+        document.getElementById('topicsModalClose').addEventListener('click', closeTopicsModal);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeTopicsModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeTopicsModal();
+        });
+
+        // マウスホイールでの横スクロール制御
+        const topicsGrid = document.getElementById('topicsGrid');
+        topicsGrid.addEventListener('wheel', (e) => {
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                e.preventDefault();
+                topicsGrid.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+
+        loadTopics();
+
+        // ==========================================
+        // メール購読フォーム
+        // ==========================================
+        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzeTkwi6mABKBoN0CYcfzVJNyfscRcPszjli48TTMn6cX4WtWz3WY5ArXCwpyyJQNUlwA/exec';
+
+        const subscribeForm = document.getElementById('subscribeForm');
+        const subscribeMessage = document.getElementById('subscribeMessage');
+
+        subscribeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('subscribeEmail').value.trim();
+            if (!email) return;
+
+            const submitBtn = subscribeForm.querySelector('.subscribe-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '送信中...';
+            subscribeMessage.textContent = '';
+            subscribeMessage.className = 'subscribe-message';
+
+            const formData = new URLSearchParams();
+            formData.append('email', email);
+
+            fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                body: formData,
+            })
+                .then(res => res.json())
+                .then(data => {
+                    subscribeMessage.textContent = data.message;
+                    subscribeMessage.classList.add(data.result === 'success' ? 'is-success' : 'is-error');
+                    if (data.result === 'success') {
+                        subscribeForm.reset();
+                    }
+                })
+                .catch(() => {
+                    subscribeMessage.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+                    subscribeMessage.classList.add('is-error');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '購読する';
+                });
+        });
+    </script>
+
+</body>
+</html>
