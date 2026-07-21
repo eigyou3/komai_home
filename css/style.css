@@ -1814,6 +1814,7 @@ footer {
 /* モーダル内の本文（voice-modal-*は既存のCSSを流用、本文だけ専用クラス） */
 .topics-modal-text {
     font-size: 14px;
+    font-family: 'Jost' , sans-serif;
     line-height: 1.9;
     color: var(--text);
     white-space: pre-line;
