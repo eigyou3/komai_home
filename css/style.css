@@ -411,6 +411,35 @@ footer {
 /* =========================================
    施工事例グリッド ＆ ホバーギミック
 ========================================= */
+.works-main {
+    padding-top: 60px; 
+    padding-bottom: 10px;
+}
+
+.works-main .page-title {
+    margin-bottom: 30px; 
+}
+
+.works-main .page-subtitle {
+    margin-bottom: 30px;  
+}
+
+.works-main .works-intro {
+    margin-bottom: 24px;  
+}
+
+.works-main .work-filter {
+    margin-bottom: 40px; 
+}
+
+@media (min-width: 1400px) {
+    .works-main {
+        max-width: 1800px;
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+}
+
 .works-intro {
     font-size: 13px;
     line-height: 1.9;
@@ -436,12 +465,12 @@ footer {
 }
 
 .work-card {
-    flex: 0 0 calc((100% - 60px) / 3);
+    flex: 0 0 480px;
     scroll-snap-align: start;
     scroll-snap-stop: always;
     display: block;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     position: relative;
     background: var(--surface);
@@ -457,15 +486,16 @@ footer {
 .work-thumb-wrapper {
     position: relative;
     width: 100%;
-    height: 250px;
+    aspect-ratio: 1200 / 630;
     overflow: hidden;
 }
 
 .work-thumb {
     position: absolute;
-    top: 0; left: 0;
+    top: 0; left: 0; 
     width: 100%; height: 100%;
     object-fit: cover;
+    object-position: center center;
     opacity: 0;
     transform: scale(1.08);
     transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
