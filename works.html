@@ -25,12 +25,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
     
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
 
     <div class="wrapper">
-        <main class="sub-main">
+        <main class="sub-main works-main">
             <h1 class="page-title">WORKS</h1>
             <p class="page-subtitle">〜 施工事例 〜</p>
 
@@ -40,11 +40,15 @@
             </p>
 
 
-            <!-- フィルターボタンは各カードの#ハッシュタグからJSが自動生成する -->
+            <!-- フィルターボタンは各カードのdata-tagsからJSが自動生成する -->
             <div class="work-filter" id="workFilter"></div>
             
             <div class="works-grid" id="worksGrid">
-                <a href="https://eigyou3.github.io/Mi_owners_house/" class="work-card" data-tags="旭川市,注文住宅,二階建て" target="_blank" rel="noopener noreferrer">
+                <a href="https://eigyou3.github.io/Mi_owners_house/"
+                class="work-card"
+                data-tags="旭川市,注文住宅,二階建て,吹抜け,鉄骨階段,中庭"
+                target="_blank"
+                rel="noopener noreferrer">
 
                     <div class="work-thumb-wrapper">
                         <img src="images/works/case4/ogp.png" alt="essential" class="work-thumb active">
@@ -54,12 +58,16 @@
                     </div>
 
                     <div class="work-info">
-                        <h2 class="work-title">そのどれもが私達にとって欠かせない要素でした。</h2>
-                        <p class="work-tag">#旭川市 #注文住宅 #二階建て #吹抜け #鉄骨階段</p>
+                        <h2 class="work-title">心地よい住まいのエッセンス</h2>
+                        <p class="work-tag"></p>
                     </div>
                 </a>
 
-                <a href="https://eigyou3.github.io/U_owners_house/" class="work-card" data-tags="旭川市,注文住宅,平屋建て" target="_blank" rel="noopener noreferrer">
+                <a href="https://eigyou3.github.io/U_owners_house/"
+                class="work-card"
+                data-tags="旭川市,注文住宅,平屋建て"
+                target="_blank"
+                rel="noopener noreferrer">
 
                     <div class="work-thumb-wrapper">
                         <img src="images/works/case3/ogp.png" alt="YORISOU_IE" class="work-thumb active">
@@ -70,11 +78,15 @@
 
                     <div class="work-info">
                         <h2 class="work-title">あなたの理想に寄り添う家。</h2>
-                        <p class="work-tag">#旭川市 #注文住宅 #平屋建て</p>
+                        <p class="work-tag"></p>
                     </div>
                 </a>
 
-                <a href="https://eigyou3.github.io/K_owners_house/" class="work-card" data-tags="旭川市,注文住宅,併用住宅,二階建て" target="_blank" rel="noopener noreferrer">
+                <a href="https://eigyou3.github.io/K_owners_house/"
+                class="work-card"
+                data-tags="旭川市,注文住宅,併用住宅,二階建て,二階LDK"
+                target="_blank"
+                rel="noopener noreferrer">
 
                     <div class="work-thumb-wrapper">
                         <img src="images/works/case2/ogp.png" alt="Kube" class="work-thumb active">
@@ -85,11 +97,15 @@
                     
                     <div class="work-info">
                         <h2 class="work-title">Cubicな佇×住まい</h2>
-                        <p class="work-tag">#旭川市 #注文住宅 #併用住宅 #二階建て</p>
+                        <p class="work-tag"></p>
                     </div>
                 </a>
 
-                <a href="https://eigyou3.github.io/M_owners_house-koti-/" class="work-card" data-tags="旭川市,注文住宅,規格住宅,二階建て" target="_blank" rel="noopener noreferrer">
+                <a href="https://eigyou3.github.io/M_owners_house-koti-/"
+                class="work-card"
+                data-tags="旭川市,注文住宅,規格住宅,二階建て"
+                target="_blank"
+                rel="noopener noreferrer">
 
                     <div class="work-thumb-wrapper">
                         <img src="images/works/case1/ogp.png" alt="koti+" class="work-thumb active">
@@ -100,7 +116,7 @@
                     
                     <div class="work-info">
                         <h2 class="work-title">暮らしに「＋」をデザインする</h2>
-                        <p class="work-tag">#旭川市 #注文住宅 #規格住宅 #二階建て</p>
+                        <p class="work-tag"></p>
                     </div>
                 </a>
             </div>
@@ -179,14 +195,29 @@
                 }
             });
 
-            const worksGrid = document.getElementById('worksGrid');
+const worksGrid = document.getElementById('worksGrid');
             if (worksGrid) {
+                let isSnapping = false;
+
                 worksGrid.addEventListener('wheel', (e) => {
-                    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                        e.preventDefault();
-                        worksGrid.scrollLeft += e.deltaY;
-                    }
-                }, { passive: false });
+                    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+                    e.preventDefault();
+                    if (isSnapping) return;
+
+                    const firstCard = worksGrid.querySelector('.work-card');
+                    if (!firstCard) return;
+
+                    const gap = parseFloat(getComputedStyle(worksGrid).gap) || 0;
+                    const step = firstCard.getBoundingClientRect().width + gap;
+                    const direction = e.deltaY > 0 ? 1 : -1;
+
+                    isSnapping = true;
+                    worksGrid.scrollBy({ left: step * direction, behavior: 'smooth' });
+
+                    setTimeout(() => {
+                        isSnapping = false;
+                    }, 500);
+                });
             }
 
             // ==========================================
@@ -195,22 +226,56 @@
             const cards = Array.from(document.querySelectorAll('.work-card'));
             const filterBar = document.getElementById('workFilter');
 
-            // 各カードのdata-tagsから、重複のないタグ一覧を初出順で作成
-            const allTags = [];
+            // data-tags（カンマ区切り）を読み取って配列にする共通関数
+            function getCardTags(card) {
+                return (card.dataset.tags || '')
+                    .split(',')
+                    .map(t => t.trim())
+                    .filter(Boolean);
+            }
+
+            // data-tagsから、カード上の表示用テキスト（#付き）を自動生成する
             cards.forEach((card) => {
-                const tags = (card.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
-                tags.forEach((tag) => {
-                    if (!allTags.includes(tag)) allTags.push(tag);
-                });
+                const tagEl = card.querySelector('.work-tag');
+                if (!tagEl) return;
+                tagEl.textContent = getCardTags(card).map(t => `#${t}`).join(' ');
             });
 
-            // 「すべて」＋各タグのボタンを生成
-            const buttonsHtml = [
-                `<button class="filter-tag is-active" data-filter="all">すべて</button>`,
-                ...allTags.map(tag => `<button class="filter-tag" data-filter="${tag}">#${tag}</button>`)
-            ].join('');
-            filterBar.innerHTML = buttonsHtml;
+// 重複のないタグ一覧を、使用回数の多い順で作成
+            const tagCounts = {};
+            cards.forEach((card) => {
+                getCardTags(card).forEach((tag) => {
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                });
+            });
+            const allTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
 
+            const VISIBLE_COUNT = 6; // 最初から見せるタグの数（だいたい1行分）
+            const visibleTags = allTags.slice(0, VISIBLE_COUNT);
+            const hiddenTags = allTags.slice(VISIBLE_COUNT);
+
+            const buildTagBtn = (tag, isExtra) =>
+                `<button class="filter-tag${isExtra ? ' filter-tag--extra' : ''}" data-filter="${tag}">#${tag}</button>`;
+
+            filterBar.innerHTML = [
+                `<button class="filter-tag is-active" data-filter="all">すべて</button>`,
+                ...visibleTags.map(tag => buildTagBtn(tag, false)),
+                ...hiddenTags.map(tag => buildTagBtn(tag, true)),
+                hiddenTags.length
+                    ? `<button class="filter-tag-more" id="filterMoreBtn" type="button">+${hiddenTags.length}<span class="material-symbols-outlined">expand_more</span></button>`
+                    : '',
+            ].join('');
+
+            const moreBtn = document.getElementById('filterMoreBtn');
+            if (moreBtn) {
+                moreBtn.addEventListener('click', () => {
+                    const expanded = filterBar.classList.toggle('is-expanded');
+                    moreBtn.innerHTML = expanded
+                        ? `閉じる<span class="material-symbols-outlined">expand_less</span>`
+                        : `+${hiddenTags.length}<span class="material-symbols-outlined">expand_more</span>`;
+                });
+            }
+            
             filterBar.addEventListener('click', (e) => {
                 const btn = e.target.closest('.filter-tag');
                 if (!btn) return;
@@ -220,7 +285,7 @@
 
                 const filter = btn.dataset.filter;
                 cards.forEach((card) => {
-                    const tags = (card.dataset.tags || '').split(',').map(t => t.trim());
+                    const tags = getCardTags(card);
                     const match = filter === 'all' || tags.includes(filter);
                     card.classList.toggle('is-filtered-out', !match);
                 });
