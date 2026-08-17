@@ -417,7 +417,7 @@ footer {
 }
 
 .works-main .page-title {
-    margin-bottom: 30px; 
+    margin-bottom: 60px; 
 }
 
 .works-main .page-subtitle {
@@ -1317,6 +1317,16 @@ footer {
 /* =========================================
    お客様の声（VOICE）専用デザイン
 ========================================= */
+.voice-main {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+.voice-main .page-title {
+    margin-bottom: 60px;
+}
+.voice-main .page-subtitle {
+    margin-bottom: 30px;
+}
 .voice-grid {
     display: flex;
     overflow-x: auto;
@@ -1884,6 +1894,36 @@ footer {
 .topics-main {
     padding-bottom: 10px;
 }
+
+/* .works-main、.topics-mainなど、フィルター展開でコンテンツの高さが
+   変わり得るページは中央寄せをやめて上寄せにする
+   （中央寄せだと内容量が増えたときに上下が均等に見切れてカードが潰れて見えるため） */
+.topics-main,
+.works-main {
+    justify-content: flex-start;
+}
+
+/* =========================================
+   フィルター展開でコンテンツの高さが変わるページ用：
+   内部スクロール領域ではなく、普通のページスクロールを許可する
+   （対象ページの<html><body>に "page-scroll" クラスを付与して使う）
+========================================= */
+html.page-scroll,
+body.page-scroll {
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+}
+.page-scroll .wrapper {
+    height: auto;
+    min-height: 100%;
+}
+.page-scroll .sub-main {
+    overflow: visible;
+    flex: 0 0 auto;
+    min-height: 0;
+}
+
 
 /* =========================================
    こまい通信：メール購読フォーム
