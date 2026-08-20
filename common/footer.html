@@ -1,9 +1,35 @@
 <footer>
     <div class="social-icons">
-        <a href="about.html">ご案内</a>
-        <a href="contact.html">お問い合わせ</a>
-        <a href="https://www.instagram.com/komai2009/?" target="_blank" rel="noopener noreferrer">インスタ</a>
+        <a href="https://komai-home.co.jp/about.html">ご案内</a>
+        <a href="https://komai-home.co.jp/contact.html">お問い合わせ</a>
+        <button type="button" class="social-icons-btn" id="footerInstagramBtn">インスタ</button>
         <a href="https://www.facebook.com/profile.php?id=100057272387014" target="_blank" rel="noopener noreferrer">フェイスブック</a>
     </div>
     <div>&copy; KOMAI HOME Co., Ltd. All right Reserved</div>
 </footer>
+
+<!-- インスタグラム選択モーダル：footerの「インスタ」から起動 -->
+<div class="gift-modal-overlay" id="instagramModalOverlay">
+    <div class="gift-modal">
+        <button type="button" class="gift-modal-close" id="instagramModalClose" aria-label="閉じる">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="gift-modal-body">
+            <p class="gift-modal-title">Instagramを選択</p>
+            <div class="gift-choice-list">
+                <a class="gift-choice gift-choice--link" href="https://www.instagram.com/komaihome_official/" target="_blank" rel="noopener noreferrer">
+                    <span class="gift-choice-name">こまいホーム 公式</span>
+                    <span class="gift-choice-desc">Officialアカウント</span>
+                </a>
+                <a class="gift-choice gift-choice--link" href="https://www.instagram.com/komaihome_staff/" target="_blank" rel="noopener noreferrer">
+                    <span class="gift-choice-name">こまいホーム スタッフ</span>
+                    <span class="gift-choice-desc">スタッフ投稿アカウント</span>
+                </a>
+                <a class="gift-choice gift-choice--link" href="https://www.instagram.com/bessou-gokochi/" target="_blank" rel="noopener noreferrer">
+                    <span class="gift-choice-name">別荘心地</span>
+                    <span class="gift-choice-desc">モデルハウス「別荘心地」のアカウント</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
