@@ -1,4 +1,4 @@
-const GA_MEASUREMENT_ID = 'G-BSYJOCRHCM';
+const GA_MEASUREMENT_ID = 'G-BSYJ0CRHCM';
  
 document.write(`<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"><\/script>`);
  
