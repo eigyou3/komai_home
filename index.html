@@ -57,15 +57,15 @@
                 "closes": "17:30"
             },
             "sameAs": [
-                "https://www.instagram.com/komai2009/",
+                "https://www.instagram.com/komaihome_official/",
                 "https://www.facebook.com/profile.php?id=100057272387014"
             ]
         }
     </script>
+    <script src="js/ga-init.js"></script>
 </head>
 
 <body>
-    <!-- 流れるお知らせヘッダー：ページ上部に固定の帯として常駐 -->
     <div class="ticker-bar">
         <div class="ticker-track">
             <a href="https://eigyou3.github.io/news/" class="ticker-item" target="_blank" rel="noopener noreferrer">
@@ -83,8 +83,6 @@
         </div>
     </div>
 
-    <!-- 横長画面用・縦長画面用で別々の背景を出し分け。
-         mp4がなければ poster に指定した画像がそのまま表示され続けます -->
     <div class="bg-media bg-media--landscape">
         <video class="bg-video" autoplay muted loop playsinline
                poster="images/common/hero-bg-landscape.png">
@@ -166,15 +164,7 @@
             </ul>
         </div>
 
-        <footer>
-            <div class="social-icons">
-                <a href="about.html">ご案内</a>
-                <a href="contact.html">お問い合わせ</a>
-                <a href="https://www.instagram.com/komaihome_official/?" target="_blank" rel="noopener noreferrer">インスタ</a>
-                <a href="https://www.facebook.com/profile.php?id=100057272387014&locale=km_KH#" target="_blank" rel="noopener noreferrer">フェイスブック</a>
-            </div>
-            <div>&copy; KOMAI HOME Co., Ltd. All right Reserved</div>
-        </footer>
+        <div data-include="common/footer.html"></div>
     </div>
 
     <!-- ギフトモーダル -->
@@ -247,8 +237,8 @@
     </div>
 
     <script>
-        // グラスモーフィズムパネル：画面が原寸(natural size)より狭い場合、
-        // 内部の比率を保ったまま丸ごとscale()で縮小する（写真のように相似形で縮む）
+        // グラスモーフィズムパネル
+        // 内部の比率を保ったまま丸ごとscale()で縮小する
         function fitGlassPanel() {
             const wrapperEl = document.querySelector('.wrapper');
             const panel = document.querySelector('.glass-panel');
@@ -263,11 +253,11 @@
             const marginLeft = parseFloat(panelStyle.marginLeft) || 0;
 
             const availableWidth = wrapperEl.clientWidth - paddingRight - marginLeft;
-            const naturalWidth = panel.scrollWidth; // パネルの原寸（固定pxで設計した本来の幅）
+            const naturalWidth = panel.scrollWidth;
 
             const scale = Math.min(0.7, availableWidth / naturalWidth);
             panel.style.transform = `scale(${scale})`;
-            panel.style.transformOrigin = 'left center'; // 左端・縦中央を基準に縮小
+            panel.style.transformOrigin = 'left center';
         }
 
         window.addEventListener('load', fitGlassPanel);
@@ -277,7 +267,7 @@
         (function loadTopicMeta() {
             const SPREADSHEET_ID = '1CMLwoz1r7VQ4ENsy1A3ipcvf7DoGsOFsd1oIkTsgzl0';
             const SHEET_NAME = 'HP用_お知らせ投稿用';
-            const NEW_THRESHOLD_DAYS = 3; // NEW!を出す基準（日数）
+            const NEW_THRESHOLD_DAYS = 3;
 
             const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
@@ -287,7 +277,6 @@
                     const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
                     const rows = json.table.rows;
 
-                    // 投稿日(B列) ／ タイトル(C列)。タイトルが空の行は除外
                     const items = rows
                         .map(row => {
                             const cells = row.c;
@@ -300,7 +289,6 @@
 
                     if (items.length === 0) return;
 
-                    // ★変更点：行の並び順ではなく、投稿日(date)そのものが一番新しいものを探す
                     let latest = null;
                     let latestTime = -Infinity;
 
@@ -328,166 +316,8 @@
                 .catch(err => console.error('こまい通信の更新情報取得に失敗:', err));
         })();
 
-        // ==========================================
-        // ギフト機能
-        // ==========================================
-        (function () {
-            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzeTkwi6mABKBoN0CYcfzVJNyfscRcPszjli48TTMn6cX4WtWz3WY5ArXCwpyyJQNUlwA/exec';
-            const REFERRAL_URL = 'https://eigyou3.github.io/referral_form/';
-            const STORAGE_KEY = 'komaiGift';
-            const TARGET_PAGES = ['concept', 'works', 'voice', 'flow'];
-
-            function loadState() {
-                try {
-                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                } catch (e) {
-                    return {};
-                }
-            }
-
-            const navItem = document.getElementById('giftNavItem');
-            const navBtn = document.getElementById('giftNavBtn');
-            const overlay = document.getElementById('giftModalOverlay');
-            const closeBtn = document.getElementById('giftModalClose');
-
-            const steps = {
-                locked: document.getElementById('giftStepLocked'),
-                choice: document.getElementById('giftStepChoice'),
-                ob: document.getElementById('giftStepOb'),
-                conditionCheck: document.getElementById('giftStepConditionCheck'),
-                form: document.getElementById('giftStepForm'),
-                done: document.getElementById('giftStepDone'),
-                already: document.getElementById('giftStepAlready'),
-            };
-
-            let isUnlocked = false;
-
-            // ロック状態の判定とボタン見た目の更新をまとめた関数
-            function refreshUnlockState() {
-                const state = loadState();
-                state.visited = state.visited || {};
-                isUnlocked = TARGET_PAGES.every(id => state.visited[id]);
-
-                if (navItem) {
-                    navItem.classList.remove('is-locked', 'is-unlocked');
-                    navItem.classList.add(isUnlocked ? 'is-unlocked' : 'is-locked');
-                }
-            }
-
-            refreshUnlockState();
-
-            // 「戻る」ボタンでbfcacheから復元されたときに再チェックする
-            window.addEventListener('pageshow', function (e) {
-                if (e.persisted) {
-                    refreshUnlockState();
-                }
-            });
-
-            function showStep(name) {
-                Object.keys(steps).forEach(key => {
-                    if (steps[key]) steps[key].hidden = (key !== name);
-                });
-            }
-
-            function openModal() {
-                showStep(isUnlocked ? 'choice' : 'locked');
-                if (overlay) overlay.classList.add('is-active');
-            }
-
-            function closeModal() {
-                if (overlay) overlay.classList.remove('is-active');
-            }
-
-            if (navBtn) {
-                navBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    openModal();
-                });
-            }
-            if (closeBtn) closeBtn.addEventListener('click', closeModal);
-            if (overlay) {
-                overlay.addEventListener('click', function (e) {
-                    if (e.target === overlay) closeModal();
-                });
-            }
-
-            // OB／検討中の選択 → 決定ボタンの活性化
-            const decideBtn = document.getElementById('giftDecideBtn');
-            document.querySelectorAll('input[name="giftStatus"]').forEach(radio => {
-                radio.addEventListener('change', function () {
-                    if (decideBtn) decideBtn.disabled = false;
-                });
-            });
-
-            if (decideBtn) {
-                decideBtn.addEventListener('click', function () {
-                    const selected = document.querySelector('input[name="giftStatus"]:checked');
-                    if (!selected) return;
-                    showStep(selected.value === 'ob' ? 'ob' : 'conditionCheck');
-                });
-            }
-
-            // お引き渡し済みの方 → You too, me too を新しいタブで開く
-            const obOpenBtn = document.getElementById('giftObOpenBtn');
-            if (obOpenBtn) {
-                obOpenBtn.addEventListener('click', function () {
-                    window.open(REFERRAL_URL, '_blank', 'noopener');
-                    closeModal();
-                });
-            }
-
-            // 検討中の方 → 条件確認 → フォームへ
-            const conditionOkBtn = document.getElementById('giftConditionOkBtn');
-            if (conditionOkBtn) {
-                conditionOkBtn.addEventListener('click', function () {
-                    showStep('form');
-                });
-            }
-
-            // 検討中の方 → メール送信（GASの購読エンドポイントを type=gift で流用）
-            const giftForm = document.getElementById('giftForm');
-            const giftEmailInput = document.getElementById('giftEmailInput');
-            const giftSubmitBtn = document.getElementById('giftSubmitBtn');
-            const giftFormMessage = document.getElementById('giftFormMessage');
-
-            if (giftForm) {
-                giftForm.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    const email = (giftEmailInput.value || '').trim();
-                    if (!email) return;
-
-                    giftSubmitBtn.disabled = true;
-                    if (giftFormMessage) {
-                        giftFormMessage.textContent = '送信中...';
-                        giftFormMessage.className = 'subscribe-message';
-                    }
-
-                    fetch(GAS_WEB_APP_URL, {
-                        method: 'POST',
-                        body: new URLSearchParams({ email: email, type: 'gift' }),
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.result === 'success') {
-                                showStep(data.alreadyApplied ? 'already' : 'done');
-                            } else {
-                                if (giftFormMessage) {
-                                    giftFormMessage.textContent = data.message || '送信に失敗しました。時間をおいて再度お試しください。';
-                                    giftFormMessage.className = 'subscribe-message is-error';
-                                }
-                                giftSubmitBtn.disabled = false;
-                            }
-                        })
-                        .catch(() => {
-                            if (giftFormMessage) {
-                                giftFormMessage.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
-                                giftFormMessage.className = 'subscribe-message is-error';
-                            }
-                            giftSubmitBtn.disabled = false;
-                        });
-                });
-            }
-        })();
     </script>
+    <script src="js/gift-panel.js"></script>
+    <script src="js/common-parts.js"></script>
 </body>
 </html>

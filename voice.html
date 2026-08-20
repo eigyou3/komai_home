@@ -26,11 +26,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
     
     <link rel="stylesheet" href="css/style.css?v=3">
+    <script src="js/ga-init.js"></script>
 </head>
 <body>
 
     <div class="wrapper">
-        <main class="sub-main">
+        <main class="sub-main voice-main">
             <h1 class="page-title">VOICE</h1>
             <p class="page-subtitle">〜 お客様の声 〜</p>
 
@@ -38,15 +39,7 @@
             <div class="voice-grid" id="voiceGrid"></div>
         </main>
 
-        <footer>
-            <div class="social-icons">
-                <a href="about.html">ご案内</a>
-                <a href="contact.html">お問い合わせ</a>
-                <a href="https://www.instagram.com/komaihome_official/?" target="_blank" rel="noopener noreferrer">インスタ</a>
-                <a href="https://www.facebook.com/profile.php?id=100057272387014&locale=km_KH#" target="_blank" rel="noopener noreferrer">フェイスブック</a>
-            </div>
-            <div>&copy; KOMAI HOME Co., Ltd. All right Reserved</div>
-        </footer>
+        <div data-include="common/footer.html"></div>
         
     </div>
 
@@ -68,9 +61,7 @@
     </div>
 
     <script>
-        // ==========================================
         // お客様の声データ：
-        // ==========================================
         const voices = [
             {
                 name: "y.m or s.m",
@@ -116,9 +107,6 @@
             },
         ];
 
-        // ==========================================
-        // カード一覧の自動生成
-        // ==========================================
         const voiceGrid = document.getElementById('voiceGrid');
 
         voices.forEach((voice, index) => {
@@ -126,6 +114,7 @@
 
             const card = document.createElement('div');
             card.className = 'voice-card';
+            card.dataset.index = index;
             card.innerHTML = `
                 <div class="voice-thumb">
                     <img src="${voice.image}" alt="${voice.name}">
@@ -134,7 +123,7 @@
                     <p class="voice-house">${voice.house}</p>
                     <h2 class="voice-name">${voice.name}</h2>
                     <p class="voice-excerpt">${previewAnswer}</p>
-                    <button class="voice-more-btn" data-index="${index}">
+                    <button class="voice-more-btn">
                         すべての回答を見る（${voice.qa.length}件）
                     </button>
                 </div>
@@ -142,9 +131,6 @@
             voiceGrid.appendChild(card);
         });
 
-        // ==========================================
-        // モーダルの開閉
-        // ==========================================
         const overlay = document.getElementById('voiceModalOverlay');
         const modalImg = document.getElementById('voiceModalImg');
         const modalHouse = document.getElementById('voiceModalHouse');
@@ -173,8 +159,8 @@
         }
 
         voiceGrid.addEventListener('click', (e) => {
-            const btn = e.target.closest('.voice-more-btn');
-            if (btn) openVoiceModal(Number(btn.dataset.index));
+            const card = e.target.closest('.voice-card');
+            if (card) openVoiceModal(Number(card.dataset.index));
         });
 
         document.getElementById('voiceModalClose').addEventListener('click', closeVoiceModal);
@@ -185,90 +171,17 @@
             if (e.key === 'Escape') closeVoiceModal();
         });
 
-        // ==========================================
-        // マウスホイールでの横スクロール制御（works.htmlと同じ仕組み）
-        // ==========================================
+        const WHEEL_SCROLL_MULTIPLIER = 3;
         voiceGrid.addEventListener('wheel', (e) => {
             if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
                 e.preventDefault();
-                voiceGrid.scrollLeft += e.deltaY;
+                voiceGrid.scrollLeft += e.deltaY * WHEEL_SCROLL_MULTIPLIER;
             }
         }, { passive: false });
     </script>
 
-    <script>
-        (function () {
-            const PAGE_ID = 'voice'; 
-            const STORAGE_KEY = 'komaiGift';
-            const TARGET_PAGES = ['concept', 'works', 'voice', 'flow'];
+    <script src="js/gift-tracker.js" data-page-id="voice"></script>
 
-            function loadState() {
-                try {
-                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-                } catch (e) {
-                    return {};
-                }
-            }
-            function saveState(state) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-            }
-
-            const state = loadState();
-            state.visited = state.visited || {};
-
-            const wasComplete = TARGET_PAGES.every(id => state.visited[id]);
-            const showFirstVisitModal = !state.firstModalShown;
-
-            state.visited[PAGE_ID] = true;
-            if (showFirstVisitModal) state.firstModalShown = true;
-
-            const nowComplete = TARGET_PAGES.every(id => state.visited[id]);
-            const showUnlockModal = nowComplete && !wasComplete && !state.unlockModalShown;
-            if (showUnlockModal) state.unlockModalShown = true;
-
-            saveState(state);
-
-            if (!showFirstVisitModal && !showUnlockModal) return;
-
-            function buildModal(title, text) {
-                const overlay = document.createElement('div');
-                overlay.className = 'gift-modal-overlay';
-                overlay.innerHTML =
-                    '<div class="gift-modal">' +
-                        '<button type="button" class="gift-modal-close" aria-label="閉じる">' +
-                            '<span class="material-symbols-outlined">close</span>' +
-                        '</button>' +
-                        '<div class="gift-modal-body">' +
-                            '<p class="gift-modal-title">' + title + '</p>' +
-                            '<p class="gift-modal-text">' + text + '</p>' +
-                        '</div>' +
-                    '</div>';
-                document.body.appendChild(overlay);
-                requestAnimationFrame(function () { overlay.classList.add('is-active'); });
-
-                function close() {
-                    overlay.classList.remove('is-active');
-                    setTimeout(function () { overlay.remove(); }, 300);
-                }
-                overlay.querySelector('.gift-modal-close').addEventListener('click', close);
-                overlay.addEventListener('click', function (e) {
-                    if (e.target === overlay) close();
-                });
-            }
-
-            if (showUnlockModal) {
-                buildModal(
-                    'ギフト獲得！',
-                    '4ページすべてご覧いただき、ありがとうございます。ギフトが解放されました。好きなタイミングでTOPページに戻って受け取ってください。'
-                );
-            } else if (showFirstVisitModal) {
-                buildModal(
-                    'ちょっとしたお知らせ',
-                    'コンセプト・施工事例・お客様の声・家づくりの流れ、4つのページすべてをご覧いただいた方に、ささやかなギフトをご用意しています。'
-                );
-            }
-        })();
-    </script>
-
+    <script src="js/common-parts.js"></script>
 </body>
 </html>
