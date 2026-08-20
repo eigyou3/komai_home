@@ -1348,6 +1348,11 @@ footer {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: var(--card-shadow);
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+.voice-card:hover {
+    border-color: var(--accent-border);
 }
 
 .voice-thumb {
@@ -1363,7 +1368,7 @@ footer {
 }
 
 .voice-card-body {
-    padding: 24px 22px;
+    padding: 24px 22px 28px;
 }
 
 .voice-house {
@@ -1387,10 +1392,10 @@ footer {
     color: var(--text-muted);
     margin-bottom: 18px;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: calc(13px * 1.8 * 3);
+    min-height: calc(13px * 1.8 * 4);
 }
 
 .voice-more-btn {
@@ -1899,7 +1904,8 @@ footer {
    変わり得るページは中央寄せをやめて上寄せにする
    （中央寄せだと内容量が増えたときに上下が均等に見切れてカードが潰れて見えるため） */
 .topics-main,
-.works-main {
+.works-main,
+.voice-main {
     justify-content: flex-start;
 }
 
@@ -2202,6 +2208,41 @@ body.page-scroll {
 .gift-choice input {
     accent-color: var(--accent);
 }
+
+/* インスタグラム選択モーダル：<a>タグ用のgift-choiceバリエーション（ラジオボタンなし、2段テキスト） */
+.gift-choice--link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    text-decoration: none;
+}
+.gift-choice-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+}
+.gift-choice-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* フッターの「インスタ」ボタン：見た目は隣の<a>タグと揃える */
+.social-icons-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--text-muted);
+    font-size: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.social-icons-btn:hover {
+    color: var(--accent);
+}
+.wrapper--home .social-icons-btn { color: #ccc; }
+.wrapper--home .social-icons-btn:hover { color: var(--accent); }
 
 .gift-decide-btn {
     width: 100%;
