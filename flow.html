@@ -211,9 +211,6 @@
                     resultDiv.style.transition = "opacity 0.6s ease";
                     resultDiv.style.opacity = 1;
                 }, 50);
-
-                // Firestoreの利用回数カウンターを+1（読み込みに失敗していても他の機能に影響しないようoptional chaining）
-                window.incrementUsageCounter?.();
             }
 
         // 契約前の流れ：画面幅に合わせて自動スケールする仕組み
@@ -278,6 +275,12 @@
                 console.error('カウンター更新エラー:', error);
             }
         };
+
+        // このページが表示されるたびに1回だけカウントアップする
+        // （通常の読み込みだけでなく、「戻る」操作でのbfcache復元時にも発火するpageshowを使う）
+        window.addEventListener('pageshow', () => {
+            window.incrementUsageCounter();
+        });
     </script>
 
     <script src="js/gift-tracker.js" data-page-id="flow"></script>

@@ -25,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
     
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=20260824">
 
     <script type="application/ld+json">
         {
@@ -133,12 +133,19 @@
                         <span class="material-symbols-outlined nav-arrow">arrow_outward</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item nav-item--forecast">
                     <a href="flow.html" class="nav-link">
                         <span class="material-symbols-outlined nav-icon">route</span>
-                        <span class="nav-text">家づくりの流れ</span>
+                        <span class="nav-text">工期シミュレーター</span>
                         <span class="material-symbols-outlined nav-arrow">arrow_outward</span>
                     </a>
+                    <div class="nav-forecast" id="flowForecast">
+                        <p class="nav-forecast-main"></p>
+                        <a href="flow.html" class="nav-forecast-sub">
+                            詳細な日付のご指定はシミュレーターを使う
+                            <span class="material-symbols-outlined nav-forecast-arrow">arrow_outward</span>
+                        </a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="access.html" class="nav-link">
@@ -318,6 +325,7 @@
 
     </script>
     <script src="js/gift-panel.js"></script>
+    <script src="js/flow-forecast.js"></script>
     <script src="js/common-parts.js"></script>
 </body>
 </html>
