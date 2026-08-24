@@ -162,6 +162,53 @@ h1.site-title {
     line-height: 1.4;
 }
 
+/* トップページナビ：家づくりの流れの引き渡し目安（2行ブロック） */
+.nav-forecast {
+    margin-top: 6px;
+    margin-left: 32px; /* nav-iconの幅ぶんインデントし、nav-textの開始位置に揃える */
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nav-forecast-main {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.nav-forecast-sub {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    transition: color 0.3s ease;
+}
+.nav-forecast-sub:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-forecast-arrow {
+    font-size: 13px;
+    opacity: 0.7;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.nav-forecast-sub:hover .nav-forecast-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+}
+
+/* forecastブロックの分、他のnav-itemより下マージンを詰めて全体の間隔を揃える */
+.nav-item--forecast {
+    margin-bottom: 16px;
+}
+
 /* =========================================
    トップページ：流れるお知らせヘッダー（ティッカー）
 ========================================= */
