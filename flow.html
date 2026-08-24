@@ -89,11 +89,6 @@
 
                 <div id="result" class="timeline-result-area"></div>
             </div>
-
-            <!-- 利用回数カウンター（一番下） -->
-            <p class="usage-counter">
-                このシミュレーター、これまでに <span id="usage-counter-value">–</span> 回使われました
-            </p>
         </main>
 
         <div data-include="common/footer.html"></div>
@@ -231,56 +226,6 @@
 
         window.addEventListener('load', fitPreFlow);
         window.addEventListener('resize', fitPreFlow);
-    </script>
-
-    <!-- Firebase：利用回数カウンター -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-        import {
-            getFirestore,
-            doc,
-            setDoc,
-            increment,
-            onSnapshot
-        } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAsKaG455c-q9E-S2Q9_iIllHLEykI_DBY",
-            authDomain: "komai-countup.firebaseapp.com",
-            projectId: "komai-countup",
-            storageBucket: "komai-countup.firebasestorage.app",
-            messagingSenderId: "172630591811",
-            appId: "1:172630591811:web:eea5701885962bd84e47f6"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const counterRef = doc(db, "counters", "flowSimulator");
-
-        // 現在のカウントをリアルタイム表示
-        onSnapshot(counterRef, (snap) => {
-            const el = document.getElementById('usage-counter-value');
-            if (!el) return;
-            const count = snap.exists() ? (snap.data().count || 0) : 0;
-            el.textContent = count.toLocaleString();
-        }, (error) => {
-            console.error('カウンター取得エラー:', error);
-        });
-
-        // ボタンが押されるたびに呼び出す
-        window.incrementUsageCounter = async function () {
-            try {
-                await setDoc(counterRef, { count: increment(1) }, { merge: true });
-            } catch (error) {
-                console.error('カウンター更新エラー:', error);
-            }
-        };
-
-        // このページが表示されるたびに1回だけカウントアップする
-        // （通常の読み込みだけでなく、「戻る」操作でのbfcache復元時にも発火するpageshowを使う）
-        window.addEventListener('pageshow', () => {
-            window.incrementUsageCounter();
-        });
     </script>
 
     <script src="js/gift-tracker.js" data-page-id="flow"></script>
