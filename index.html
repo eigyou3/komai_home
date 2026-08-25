@@ -262,13 +262,25 @@
             const availableWidth = wrapperEl.clientWidth - paddingRight - marginLeft;
             const naturalWidth = panel.scrollWidth;
 
-            const scale = Math.min(0.7, availableWidth / naturalWidth);
+            // 縦方向：wrapperの高さから、フッターの実際の高さぶんを引いた残りが使える範囲
+            // （フッターはcommon-parts.jsでfetch後に差し込まれるため、この時点でのoffsetHeightを見る）
+            const footerEl = wrapperEl.querySelector('footer');
+            const footerHeight = footerEl ? footerEl.offsetHeight : 0;
+            const availableHeight = wrapperEl.clientHeight - footerHeight;
+            const naturalHeight = panel.scrollHeight;
+
+            const scaleByWidth = availableWidth / naturalWidth;
+            const scaleByHeight = availableHeight / naturalHeight;
+
+            const scale = Math.min(0.7, scaleByWidth, scaleByHeight);
             panel.style.transform = `scale(${scale})`;
             panel.style.transformOrigin = 'left center';
         }
 
         window.addEventListener('load', fitGlassPanel);
         window.addEventListener('resize', fitGlassPanel);
+        // フッターなど共通パーツの読み込み完了後にも再計算する（common-parts.jsが発火）
+        document.addEventListener('includesLoaded', fitGlassPanel);
 
         // 「こまい通信」の最新更新日を取得して表示する
         (function loadTopicMeta() {
