@@ -51,10 +51,16 @@
   }
 
   .legend-line{
-    text-align:center;font-size:.72rem;color:var(--ink-mute);margin-bottom:26px;letter-spacing:.01em;
+    text-align:center;font-size:.72rem;color:var(--ink-mute);margin-bottom:8px;letter-spacing:.01em;
   }
   .legend-line span{margin:0 7px;white-space:nowrap;}
   .legend-line svg{vertical-align:-2px;margin-right:2px;}
+
+  .help-btn{
+    display:block;margin:0 auto 26px;background:none;border:none;font-size:.74rem;
+    color:var(--ink-mute);text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+  }
+  .help-btn:hover{color:var(--ink);}
 
   .next-best{
     text-align:center;padding:16px 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
@@ -113,6 +119,11 @@
   .modal-tag{font-size:.72rem;border:1px solid var(--line);border-radius:20px;padding:3px 10px;color:var(--ink);}
   .modal-note{font-size:.82rem;color:var(--ink);line-height:1.6;}
 
+  .help-card{max-width:400px;}
+  .help-block{margin-bottom:14px;}
+  .help-block:last-child{margin-bottom:0;}
+  .help-row{font-size:.8rem;line-height:1.7;color:var(--ink);}
+
   @media (max-width:420px){
     .day .num{font-size:.85rem;}
     h1{font-size:1.3rem;}
@@ -136,6 +147,7 @@
   </div>
 
   <div class="legend-line" id="legendLine"></div>
+  <button class="help-btn" id="helpBtn" type="button" aria-label="用語の説明">？ 記号・用語の説明</button>
 
   <div class="next-best" id="nextBest"></div>
   <div class="upcoming" id="upcoming"></div>
@@ -144,7 +156,7 @@
   <div class="days-grid" id="daysGrid" role="grid" aria-label="カレンダー"></div>
 
   <footer>
-    六曜・三隣亡・天赦日・一粒万倍日・寅の日・巳の日／己巳の日は暦注に基づく伝統的な目安です。<br>実際の日程はお施主様のご都合・現場の進捗と合わせて確定してください。
+    六曜・三隣亡・天赦日・不成就日・一粒万倍日・寅の日・巳の日／己巳の日は暦注に基づく伝統的な目安です。実際の日程はお施主様のご都合・現場の進捗と合わせて確定してください。
   </footer>
 </div>
 
@@ -156,6 +168,28 @@
     <div class="modal-level" id="modalLevel"></div>
     <div class="modal-tags" id="modalTags"></div>
     <div class="modal-note" id="modalNote"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="helpBackdrop">
+  <div class="modal-card help-card">
+    <button class="modal-close" id="helpClose" type="button" aria-label="閉じる">✕</button>
+    <div class="modal-date">記号・用語の説明</div>
+    <div class="help-block">
+      <div class="help-row">◎　大安に一粒万倍日・寅の日・巳の日・天赦日などが重なる、特に縁起の良い日</div>
+      <div class="help-row">◯　大安の日</div>
+      <div class="help-row">△　先勝など、時間帯によって吉凶が変わる日</div>
+      <div class="help-row">✕　三隣亡・仏滅・不成就日など、避けたほうがよいとされる日</div>
+      <div class="help-row">無印　友引などの、特に吉凶の印がつかない日</div>
+    </div>
+    <div class="help-block">
+      <div class="help-row"><b>六曜</b>／大安：万事に良い　友引：慶事向き、正午は凶　先勝：午前が吉　先負：午後が吉　赤口：正午のみ吉　仏滅：万事に凶</div>
+      <div class="help-row"><b>三隣亡</b>／この日の建築は三軒両隣まで凶事が及ぶとされ、建築業界で特に避けられる日</div>
+      <div class="help-row"><b>不成就日</b>／何事も成就しないとされる日。契約や着工などの「始めごと」全般に不向き</div>
+      <div class="help-row"><b>天赦日</b>／暦のうえで最上とされる吉日。不成就日の凶を打ち消すともされる</div>
+      <div class="help-row"><b>一粒万倍日</b>／一粒の籾が万倍に実るとされる、何かを始めるのに良い日</div>
+      <div class="help-row"><b>寅の日・巳の日・己巳の日</b>／金運に良いとされる日</div>
+    </div>
   </div>
 </div>
 
@@ -185,6 +219,7 @@ const TORA = new Set(['1-4','1-16','1-28','2-9','2-21','3-5','3-17','3-29','4-10
 const MI = new Set(['1-7','1-19','1-31','2-12','2-24','3-8','3-20','4-1','4-13','4-25','5-7','5-19','5-31','6-12','6-24','7-6','7-18','7-30','8-11','8-23','9-4','9-16','9-28','10-10','10-22','11-3','11-15','11-27','12-9','12-21']);
 const TSUCHI = new Set(['2-24','4-25','6-24','8-23','10-22','12-21']);
 const ICHI = new Set(['1-1','1-2','1-5','1-14','1-17','1-26','1-29','2-8','2-13','2-20','2-25','3-4','3-5','3-12','3-17','3-24','3-29','4-8','4-11','4-20','4-23','5-2','5-5','5-6','5-17','5-18','5-29','5-30','6-12','6-13','6-24','6-25','7-6','7-7','7-10','7-19','7-22','7-31','8-3','8-13','8-18','8-25','8-30','9-6','9-7','9-14','9-19','9-26','10-1','10-11','10-14','10-23','10-26','11-4','11-7','11-8','11-19','11-20','12-1','12-2','12-15','12-16','12-27','12-28']);
+const FUJOJU = new Set(['1-1','1-9','1-17','1-24','2-1','2-9','2-19','2-27','3-7','3-15','3-20','3-28','4-5','4-13','4-17','4-25','5-3','5-11','5-20','5-28','6-5','6-13','6-19','6-27','7-5','7-13','7-19','7-27','8-4','8-12','8-15','8-23','8-31','9-8','9-12','9-20','9-28','10-6','10-10','10-18','10-26','11-3','11-12','11-20','11-28','12-6','12-13','12-21','12-29']);
 const HOL = {
   '1-1':'元日','1-12':'成人の日','2-11':'建国記念の日','2-23':'天皇誕生日','3-20':'春分の日',
   '4-29':'昭和の日','5-3':'憲法記念日','5-4':'みどりの日','5-5':'こどもの日','5-6':'振替休日',
@@ -213,13 +248,14 @@ function icon(level){
 }
 const LVL = {best:'最良の日',good:'良い日',caution:'時間帯に注意',avoid:'避けたい日',neutral:'ふつうの日'};
 
-// 判定：三隣亡最優先、次に六曜。契約は先負/赤口OK、儀式系はNGにしてる
+// 判定：三隣亡最優先、次に不成就日（天赦日が重なる日だけ打ち消し）、次に六曜。契約は先負/赤口OK、儀式系はNGにしてる
 function bonus(key){ return TEN.has(key) || ICHI.has(key) || TORA.has(key) || MI.has(key); }
 
 function calcLv(m, d, cat){
   const key = m+'-'+d;
   const r = RY[m][d-1];
   if (SR.has(key)) return 'avoid';
+  if (FUJOJU.has(key) && !TEN.has(key)) return 'avoid';
   if (r === 'bm') return 'avoid';
   if (r === 'ta') return bonus(key) ? 'best' : 'good';
   if (r === 'tb') return 'neutral';
@@ -370,6 +406,7 @@ function openModal(m,d){
 
   const tags = [];
   if (SR.has(key)) tags.push('三隣亡');
+  if (FUJOJU.has(key)) tags.push('不成就日');
   if (TEN.has(key)) tags.push('天赦日');
   if (ICHI.has(key)) tags.push('一粒万倍日');
   if (TORA.has(key)) tags.push('寅の日');
@@ -380,7 +417,8 @@ function openModal(m,d){
 
   let note = '';
   if (SR.has(key)) note = '三隣亡のため、六曜にかかわらず建築儀礼は避けるのが無難です。';
-  else if (lv === 'best') note = '大安に' + tags.filter(t=>t!=='三隣亡').join('・') + 'が重なる、年間でも特に縁起の良い日です。';
+  else if (FUJOJU.has(key) && !TEN.has(key)) note = '不成就日のため、六曜が良くても契約や着工など「始めごと」は避けるのが無難とされています。';
+  else if (lv === 'best') note = '大安に' + tags.filter(t=>t!=='三隣亡'&&t!=='不成就日').join('・') + 'が重なる、年間でも特に縁起の良い日です。';
   else if (lv === 'good') note = '大安の日です。';
   else if (lv === 'caution') note = '時間帯によって吉凶が変わる日です。開催時間にご注意ください。';
   else if (lv === 'avoid') note = '六曜のうえで避けたほうがよいとされる日です。';
@@ -410,7 +448,20 @@ document.getElementById('modalClose').addEventListener('click', closeModal);
 document.getElementById('modalBackdrop').addEventListener('click', (e)=>{
   if (e.target.id === 'modalBackdrop') closeModal();
 });
-document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') closeModal(); });
+document.getElementById('helpBtn').addEventListener('click', ()=>{
+  document.getElementById('helpBackdrop').classList.add('open');
+});
+document.getElementById('helpClose').addEventListener('click', ()=>{
+  document.getElementById('helpBackdrop').classList.remove('open');
+});
+document.getElementById('helpBackdrop').addEventListener('click', (e)=>{
+  if (e.target.id === 'helpBackdrop') e.target.classList.remove('open');
+});
+document.addEventListener('keydown', (e)=>{
+  if (e.key !== 'Escape') return;
+  closeModal();
+  document.getElementById('helpBackdrop').classList.remove('open');
+});
 
 // 初期化
 (function init(){
